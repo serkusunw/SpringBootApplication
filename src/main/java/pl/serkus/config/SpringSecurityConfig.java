@@ -61,5 +61,4 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		web.ignoring()
 		.antMatchers("/resources/**","/statics/**","/css/**","/js/**","/images/**");
 	}
-	
 }
