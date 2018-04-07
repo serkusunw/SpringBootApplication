@@ -11,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "user")
@@ -21,17 +25,33 @@ public class User {
 	@Column(name = "user_id")
 	private int id;
 	
+	@Column(name = "email")
+	@Email(message = "Podaj adres email")
+	@NotEmpty(message = "Email jest wymagany")
+	private String email;
+	
+	@Column(name = "password")
+	@Length(min = 5, message = "Hasło musi zawierać min. 5 znaków")
+	@NotEmpty(message = "Hasło jest wymagane")
+	private String password;
+	
+	@NotEmpty(message = "Podaj swoje imię")
 	@Column(name = "user_name")
 	private String name;
 	
+	@NotEmpty(message = "Podaj swoje nazwisko")
 	@Column(name = "user_surname")
 	private String surname;
 	
+	@NotEmpty(message = "Podaj swój wiek")
 	@Column(name = "age")
 	private String age;
 	
 	@Column(name = "registerDate")
 	private String registerDate;
+	
+	@Column(name = "active")
+	private boolean active;
 	
 	@ManyToMany(cascade =
         {
@@ -49,6 +69,22 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getName() {
@@ -83,6 +119,14 @@ public class User {
 		this.registerDate = registerDate;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -90,6 +134,4 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
-	
 }
