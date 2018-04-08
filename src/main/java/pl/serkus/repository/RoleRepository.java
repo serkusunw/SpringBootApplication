@@ -6,5 +6,5 @@ import pl.serkus.model.Role;
 
 @Repository("RoleRepository")
 public interface RoleRepository extends JpaRepository<Role, Integer>{
-
+	public Role findByRole(String role);
 }

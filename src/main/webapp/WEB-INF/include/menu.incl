@@ -1,5 +1,5 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="background-color: #e3f2fd;">
-  <a class="navbar-brand" href="/"><s:message code="page.title.index"/></a>
+  <a class="navbar-brand" href="/"><s:message code="page.title"/></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -7,22 +7,13 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item">
-        	<a class="btn btn-outline-info mr-2" href="/rejestracja"><s:message code="page.title.register"/></a>
+        	<a class="btn btn-outline-info mr-2" href="/register"><s:message code="page.title.register"/></a>
       	</li>
  	    <li class="nav-item">
    	   	 	<a class="btn btn-outline-info mr-2" href="/logowanie"><s:message code="page.title.login"/></a>
       	</li>
-
-<!--       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li> -->
     </ul>
+    
     <ul class="navbar-nav">
     	<li class="nav-item">
     		<a class="btn btn-outline-danger mr-2" href="/wyloguj"><s:message code="page.title.logout"/></a>
@@ -34,9 +25,5 @@
     		<a class="btn btn-outline-success" href="/?lang=en">EN</a>
     	</li>
     </ul>
-    
-        
-	    
-	    
   </div>
 </nav>

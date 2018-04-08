@@ -6,5 +6,5 @@ import pl.serkus.model.*;
 
 @Repository("UserRepository")
 public interface UserRepository extends JpaRepository<User, Integer>{
-
+	public User findByEmail(String email);
 }

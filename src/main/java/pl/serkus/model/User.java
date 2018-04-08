@@ -1,5 +1,6 @@
 package pl.serkus.model;
 
+import java.sql.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
@@ -47,10 +49,13 @@ public class User {
 	private String age;
 	
 	@Column(name = "registerDate")
-	private String registerDate;
+	private Date registerDate;
 	
 	@Column(name = "active")
 	private boolean active;
+	
+	@Transient
+	private String passwordCheck;
 	
 	@ManyToMany(cascade =
         {
@@ -61,6 +66,15 @@ public class User {
         })
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+
+	
+	public String getPasswordCheck() {
+		return passwordCheck;
+	}
+
+	public void setPasswordCheck(String passwordCheck) {
+		this.passwordCheck = passwordCheck;
+	}
 
 	public int getId() {
 		return id;
@@ -110,11 +124,11 @@ public class User {
 		this.age = age;
 	}
 
-	public String getRegisterDate() {
+	public Date getRegisterDate() {
 		return registerDate;
 	}
 
-	public void setRegisterDate(String registerDate) {
+	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
 	}
 
