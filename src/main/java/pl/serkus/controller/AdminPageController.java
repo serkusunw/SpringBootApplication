@@ -27,13 +27,7 @@ public class AdminPageController {
 	@RequestMapping(value = "/admin/users")
 	public String getAllUsers(Model model) {
 
-		List<User> userList = userService.findAll();
-		
-		for(User user : userList) {
-			
-			int roleNumber = user.getRoles().iterator().next().getId();
-			user.setRoleId(roleNumber);
-		}
+		List<User> userList = getUserList();
 		
 		model.addAttribute("userList", userList);
 		
@@ -80,23 +74,68 @@ public class AdminPageController {
 				roleMap.put(2, "Administrator");
 				model.addAttribute("roleMap", roleMap);
 				
-				returnPage = "admin/useredit";
+				returnPage = "/admin/useredit";
 			}
 			else {
 				userService.updateUser(role, user);
 				
-				List<User> userList = userService.findAll();
-				
-				for(User user1 : userList) {
-					
-					int roleNumber = user1.getRoles().iterator().next().getId();
-					user1.setRoleId(roleNumber);
-				}
-				
-				model.addAttribute("userList", userList);
-				returnPage = "admin/users";
+				returnPage = "redirect:/admin/users";
 			}
 			
 			return returnPage;
+	}
+	
+	@RequestMapping(value = "/admin/delete/{id}")
+	public String getUserToDelete(@PathVariable("id") String id) {
+		
+		User user = new User();
+		
+		int userId = Integer.parseInt(id);
+		user = userService.findUserById(userId);
+		
+		userService.deleteUser(user);
+		
+		return "redirect:/admin/users";
+	}
+	
+	@RequestMapping(value = "/admin/lockaccount/{id}")
+	public String getUserLock(@PathVariable("id") String id) {
+		
+		User user = relockUser(id, false);
+		
+		userService.updateUser("ROLE_USER", user);
+		
+		return "redirect:/admin/users";
+	}
+	
+	@RequestMapping(value = "/admin/unlockaccount/{id}")
+	public String getUserToUnlock(@PathVariable("id") String id) {
+		
+		User user = relockUser(id, true);
+		
+		userService.updateUser("ROLE_USER", user);
+		
+		return "redirect:/admin/users";
+	}
+	
+	public User relockUser(String id, boolean active) {
+		User user = new User();
+		int userId = Integer.parseInt(id);
+		user = userService.findUserById(userId);
+		
+		user.setActive(active);
+		
+		return user;
+	}
+	
+	public List<User> getUserList(){
+		List<User> userList = userService.findAll();
+		
+		for(User user : userList) {
+			
+			int roleNumber = user.getRoles().iterator().next().getId();
+			user.setRoleId(roleNumber);
+		}
+		return userList;
 	}
 }

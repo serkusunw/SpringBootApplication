@@ -10,4 +10,6 @@ public class LoginPageController {
 	public String showLoginForm() {
 		return "login";
 	}
+	
+	
 }

@@ -60,16 +60,29 @@
 								<font color="#ea3500"><b><s:message code="admin.users.column.role.admin" /></b></font>
 							</c:when>
 						</c:choose></td>
-						<td><a href="/admin/edit/${user.id}" style="color: black" rel="tooltip" title="<s:message code="admin.user.edit.title"/>"><svg id="i-compose" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-						    <path d="M27 15 L27 30 2 30 2 5 17 5 M30 6 L26 2 9 19 7 25 13 23 Z M22 6 L26 10 Z M9 19 L13 23 Z" />
-						</svg></a>
-						
-						<script>
-							$("* [rel='tooltip']").tooltip({
-							   html: true, 
-							   placement: 'bottom'
-							});
-						</script> 
+						<td>
+							<a href="/admin/edit/${user.id}" style="color: black" rel="tooltip" title="<s:message code="admin.user.edit.title"/>"><svg id="i-compose" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+							    <path d="M27 15 L27 30 2 30 2 5 17 5 M30 6 L26 2 9 19 7 25 13 23 Z M22 6 L26 10 Z M9 19 L13 23 Z" />
+							</svg></a>
+							<a href="/admin/delete/${user.id}" style="color: black" rel="tooltip" title="<s:message code="button.delete"/>"><svg id="i-trash" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+							    <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6" />
+							</svg></a>
+							<a href="/admin/lockaccount/${user.id}" style="color: black" rel="tooltip" title="<s:message code="button.lock"/>"><svg id="i-lock" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+							    <path d="M5 15 L5 30 27 30 27 15 Z M9 15 C9 9 9 5 16 5 23 5 23 9 23 15 M16 20 L16 23" />
+							    <circle cx="16" cy="24" r="1" />
+							</svg></a>
+							<a href="/admin/unlockaccount/${user.id}" style="color: black" rel="tooltip" title="<s:message code="button.unlock"/>"><svg id="i-unlock" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+							    <path d="M5 15 L5 30 27 30 27 15 Z M9 15 C9 7 9 3 16 3 23 3 23 8 23 9 M16 20 L16 23" />
+							    <circle cx="16" cy="24" r="1" />
+							</svg></a>
+							
+							<script>
+								$("* [rel='tooltip']").tooltip({
+								   html: true, 
+								   placement: 'bottom'
+								});
+							</script> 
+						</td>
 						
 					</tr>
 				</c:forEach>

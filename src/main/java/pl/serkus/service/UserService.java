@@ -14,4 +14,6 @@ public interface UserService {
 	public User findUserById(int id);
 	
 	public void updateUser(String role, User user);
+	
+	public void deleteUser(User user);
 }

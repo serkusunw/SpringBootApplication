@@ -14,6 +14,10 @@
 
 	<div class="container mt-5 p-4" style="width: 80%; background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
 	
+		<h1 class="text-center font-weight-light mb-4">
+			<s:message code='admin.user.edit.title' />
+		</h1>
+	
 		<sf:form id="usersForm" action="/admin/update" modelAttribute="user" enctype="multipart/form-data" method="POST">
 			<sf:hidden path="id"/>
 			<sf:hidden path="password"/>

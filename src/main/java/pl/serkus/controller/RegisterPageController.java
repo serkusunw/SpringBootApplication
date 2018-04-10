@@ -39,13 +39,12 @@ public class RegisterPageController {
 			result.rejectValue("passwordCheck", "error.wrongPassword");
 		}
 		if (result.hasErrors()) {
-			returnPage = "register";
+			returnPage = "/register";
 		} else {
 			user.setRegisterDate(new Date(Calendar.getInstance().getTimeInMillis()));
 			userService.saveUser(user);
-			model.addAttribute("message", "Rejestracja przebiegła pomyślnie. Możesz się zalogować");
-			model.addAttribute("user", new User());
-			returnPage = "register";
+			model.addAttribute("registrationSuccess", 1);
+			returnPage = "/login";
 		}
 		return returnPage;
 	}
