@@ -26,7 +26,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	private String userQuery = "select email, password, active from user where email=?";
 	
-	private String rolesQuery = "select u.email, r.role from user u inner join user_role ur on(u.user_id=ur.user_id) inner join role r on(ur.role_id=r.role_id) where u.email=?";
+	private String rolesQuery = "select u.email, r.role_name from user u inner join user_role ur on(u.user_id=ur.user_id) inner join role r on(ur.role_id=r.role_id) where u.email=?";
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,7 +43,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/login").permitAll()
 		.antMatchers("/register").permitAll()
 		.antMatchers("/adduser").permitAll()
-//		.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+		.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 		.anyRequest().authenticated()
 		.and().csrf().disable()
 		.formLogin()
@@ -53,7 +53,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		.passwordParameter("password")
 		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/")
-		.and().exceptionHandling().accessDeniedPage("/denied");
+		.and().exceptionHandling().accessDeniedPage("/login");
 	}
 	
 	@Override

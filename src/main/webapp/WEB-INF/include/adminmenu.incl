@@ -6,32 +6,23 @@
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-    	<sec:authorize access="hasRole('ANONYMOUS')">
+    	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	        <li class="nav-item">
-	        	<a class="btn btn-info mr-2" href="/register"><s:message code="page.title.register"/></a>
+	        	<a class="btn btn-info mr-2" href="/admin/users"><s:message code="admin.users"/></a>
 	      	</li>
-      	</sec:authorize>
-      	
-      	<sec:authorize access="hasRole('ANONYMOUS')">
-		    <li class="nav-item">
-	  	   	 	<a class="btn btn-info mr-2" href="/login"><s:message code="page.title.login"/></a>
-	     	</li>
       	</sec:authorize>
     </ul>
     
     <ul class="navbar-nav">
-     	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	    	<li class="nav-item">
-	    		<a class="btn btn-warning mr-2" href="/admin"><s:message code="admin.title"/></a>
-	    	</li>
-	    	
-    	</sec:authorize>
-   	   <sec:authorize access="isAuthenticated()">
-	    	<li class="nav-item">
-	    		<a class="btn btn-danger mr-2" href="/logout"><s:message code="page.title.logout"/></a>
-	    	</li>
-    	</sec:authorize>
-    	
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+	        <li class="nav-item">
+	        	<a class="btn btn-outline-info mr-2" href="/"><s:message code="admin.back"/></a>
+	      	</li>
+      	</sec:authorize>
+      	
+    	<li class="nav-item">
+    		<a class="btn btn-danger mr-2" href="/logout"><s:message code="page.title.logout"/></a>
+    	</li>
    	    <li class="nav-item">
     		<a class="btn btn-outline-success mr-2" href="/?lang=pl">PL</a>
     	</li>

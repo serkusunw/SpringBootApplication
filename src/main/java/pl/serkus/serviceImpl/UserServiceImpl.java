@@ -50,4 +50,11 @@ public class UserServiceImpl implements UserService{
 	public User findUserById(int id) {
 		return userRepository.findById(id).get();
 	}
+
+	@Override
+	public void updateUser(String role, User user) {
+		Role userRole = roleRepository.findByRole(role);
+		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+		userRepository.save(user);
+	}
 }
