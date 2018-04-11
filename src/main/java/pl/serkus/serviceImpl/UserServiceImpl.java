@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.serkus.model.Role;
@@ -61,5 +63,12 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void deleteUser(User user) {
 		userRepository.delete(user);
+	}
+
+	@Override
+	public Page<User> findAllPages(Pageable pageable) {
+		Page<User> pages = userRepository.findAll(pageable);
+		
+		return pages;
 	}
 }

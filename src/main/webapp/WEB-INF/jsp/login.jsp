@@ -9,7 +9,7 @@
 	<title><s:message code="page.title.login"/></title>
 	<%@include file="/WEB-INF/include/bootstrap.incl" %>
 </head>
-<body  style="background-color: #E7E7E7">
+<body style="background-color: #E7E7E7">
 	<%@include file="/WEB-INF/include/menu.incl" %>
 	
 		<c:choose>

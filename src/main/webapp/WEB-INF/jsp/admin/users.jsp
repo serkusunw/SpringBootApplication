@@ -16,8 +16,7 @@
 <body style="background-color: #E7E7E7">
 	<%@include file="/WEB-INF/include/adminmenu.incl"%>
 
-	<div class="container mt-5 p-4"
-		style="width: 90%; background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
+	<div class="container mt-5 p-4" style="background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
 		<h1 class="text-center font-weight-light mb-4">
 			<s:message code='admin.users.list' />
 		</h1>
@@ -88,6 +87,19 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		
+		<c:if test="${currentPage > 0 }">
+			<input type="button"
+				class="btn btn-dark"
+				onclick="window.location.href='${pageContext.request.contextPath}/admin/users/${currentPage-1}'"
+				value="<s:message code="button.previous"/>" />&nbsp;&nbsp;
+		</c:if>
+		<c:if test="${currentPage < totalPages-1 }">
+			<input type="button"
+				class="btn btn-dark" 
+				onclick="window.location.href='${pageContext.request.contextPath}/admin/users/${currentPage+1}'"
+				value="<s:message code="button.next"/>" />
+		</c:if>
 	</div>
 </body>
 </html>

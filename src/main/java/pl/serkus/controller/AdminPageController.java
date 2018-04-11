@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,13 +27,29 @@ public class AdminPageController {
 	}
 	
 	@RequestMapping(value = "/admin/users")
-	public String getAllUsers(Model model) {
-
-		List<User> userList = getUserList();
+	public String getAllUsers() {
+		return "redirect:users/0";
+	}
+	
+	@RequestMapping(value = "admin/users/{page}")
+	public String showZamowieniaPageable(@PathVariable("page") int page, Model model) {
+		
+		int elements = 5;
+		Page<User> pages = userService.findAllPages(PageRequest.of(page, elements));
+		int totalPages = pages.getTotalPages();
+		int currentPage = pages.getNumber();
+		List<User> userList = pages.getContent();
+		
+		for(User user : userList) {
+			int roleNumber = user.getRoles().iterator().next().getId();
+			user.setRoleId(roleNumber);
+		}
 		
 		model.addAttribute("userList", userList);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", currentPage);
 		
-		return "admin/users";
+		return "/admin/users";
 	}
 	
 	@RequestMapping(value = "/admin/edit/{id}")

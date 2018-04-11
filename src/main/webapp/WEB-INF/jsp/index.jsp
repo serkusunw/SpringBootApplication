@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><s:message code="page.title.index"/></title>
 </head>
-<body>
+<body style="background-color: #E7E7E7">
 	<%@include file="/WEB-INF/include/menu.incl" %>
 </body>
 </html>

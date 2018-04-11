@@ -20,6 +20,11 @@
     </ul>
     
     <ul class="navbar-nav">
+       	<sec:authorize access="isAuthenticated() and not hasRole('ROLE_ADMIN')">
+	    	<li class="nav-item">
+	    		<a class="btn btn-info mr-2" href="/profile"><s:message code="user.profile.yourprofile"/></a>
+	    	</li>
+    	</sec:authorize>
      	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	    	<li class="nav-item">
 	    		<a class="btn btn-warning mr-2" href="/admin"><s:message code="admin.title"/></a>
