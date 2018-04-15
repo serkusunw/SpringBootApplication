@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
@@ -25,6 +26,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
 	private int id;
+	
+	@OneToOne(cascade =
+        {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
+        })
+	@JoinColumn(name="address_id")
+	private Address address;
 	
 	@Column(name = "email")
 	@Email(message = "Podaj adres email")
@@ -70,6 +81,19 @@ public class User {
 	@Transient
 	private int roleId;
 	
+	public User() {
+		
+	}
+	
+	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	public int getRoleId() {
 		return roleId;
 	}

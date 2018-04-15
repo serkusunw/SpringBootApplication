@@ -24,6 +24,10 @@
 		<div class="container mt-5 p-4" style="width: 22%; background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0,0,0,0.63); border-radius: 5px;">
 		
 			<h2 class="text-center font-weight-light mb-4"><s:message code="login.title"/></h2>
+			<div class="row justify-content-center  mt-4">
+				<img class="justify-content-center" src="https://image.flaticon.com/icons/svg/545/545802.svg" height="60" width="60">
+			</div>
+			
 			
 			<form id="loginForm" action="/login" method="POST">
 		

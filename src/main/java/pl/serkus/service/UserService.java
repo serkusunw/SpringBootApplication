@@ -19,5 +19,7 @@ public interface UserService {
 	
 	public void updateUser(String role, User user);
 	
+	public void updateUser(User user);
+	
 	public void deleteUser(User user);
 }

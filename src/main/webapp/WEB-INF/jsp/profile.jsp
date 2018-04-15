@@ -14,9 +14,14 @@
 	<%@include file="/WEB-INF/include/menu.incl" %>
 	
 		<div class="container mt-5 p-4" style="width: 22%; background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0,0,0,0.63); border-radius: 5px;">
-	
-			<h2 class="text-center font-weight-light mb-5"><s:message code="user.profile.yourprofile"/></h2>
 
+			<div class="row justify-content-center">
+				<img class="justify-content-center" src="https://cdn1.iconfinder.com/data/icons/pinterest-ui-glyph/48/Sed-01-256.png" height="120" width="120">
+			</div>
+			
+			<h1 class="text-center font-weight-light mb-4">
+				<s:message code="user.profile.yourprofile"/>
+			</h1>
 			<div class="row mb-3">
 				<div class="col font-weight-bold"><s:message code='admin.users.column.name' /></div>
 				<div class="col"><c:out value="${user.name }"/></div>
@@ -36,6 +41,9 @@
 			<div class="row">
 				<div class="col font-weight-bold"><s:message code='admin.users.column.date' /></div>
 				<div class="col"><c:out value="${user.registerDate }"/></div>
+			</div>
+			<div class="row justify-content-center pt-4">
+				<a class="btn btn-dark" href="/profile/edit"><s:message code='user.profile.edit'/></a>
 			</div>
 
 	</div>

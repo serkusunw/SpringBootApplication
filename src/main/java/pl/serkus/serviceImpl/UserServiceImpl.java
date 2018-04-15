@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.serkus.model.Address;
 import pl.serkus.model.Role;
 import pl.serkus.model.User;
+import pl.serkus.repository.AddressRepository;
 import pl.serkus.repository.RoleRepository;
 import pl.serkus.repository.UserRepository;
 import pl.serkus.service.UserService;
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService{
 		
 		Role role = roleRepository.findByRole("ROLE_USER");
 		user.setRoles(new HashSet<Role>(Arrays.asList(role)));
+		
 		userRepository.save(user);
 	}
 
@@ -45,7 +48,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User findUserByEmail(String email) {
-		return userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email);
+		return user;
 	}
 
 	@Override
@@ -57,6 +61,13 @@ public class UserServiceImpl implements UserService{
 	public void updateUser(String role, User user) {
 		Role userRole = roleRepository.findByRole(role);
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+		userRepository.save(user);
+	}
+	
+	@Override
+	public void updateUser(User user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		
 		userRepository.save(user);
 	}
 
