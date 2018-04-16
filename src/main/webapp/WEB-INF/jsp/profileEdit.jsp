@@ -41,7 +41,7 @@
 
 			<div class="form-group">
 				<label for="age"><s:message code="register.age" /></label>
-				<sf:input path="age" type="text" id="age" class="form-control" />
+				<sf:input path="age" type="date" id="age" class="form-control" />
 			</div>
 
 			<div class="form-group">

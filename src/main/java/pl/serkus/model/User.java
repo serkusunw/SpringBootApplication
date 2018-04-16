@@ -14,9 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "user")
@@ -60,7 +57,7 @@ public class User {
 	
 	//@NotEmpty(message = "Podaj swój wiek")
 	@Column(name = "age")
-	private String age;
+	private Date age;
 	
 	@Column(name = "registerDate")
 	private Date registerDate;
@@ -81,6 +78,9 @@ public class User {
 	@Transient
 	private int roleId;
 	
+	@Transient
+	private String date;
+	
 	public User() {
 		
 	}
@@ -93,6 +93,18 @@ public class User {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	
+
+	public String getDate() {
+		return date;
+	}
+
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 
 	public int getRoleId() {
 		return roleId;
@@ -150,11 +162,11 @@ public class User {
 		this.surname = surname;
 	}
 
-	public String getAge() {
+	public Date getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(Date age) {
 		this.age = age;
 	}
 

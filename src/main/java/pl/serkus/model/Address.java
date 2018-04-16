@@ -32,7 +32,8 @@ public class Address {
 	@OneToOne(mappedBy="address")
 	private User user;
 	
-	public Address(String city, String street, String postal_code, String number) {
+	public Address(Integer id, String city, String street, String postal_code, String number) {
+		this.id = id;
 		this.city = city;
 		this.street = street;
 		this.postal_code = postal_code;
@@ -51,6 +52,7 @@ public class Address {
 	public Address() {
 		
 	}
+
 
 	public int getId() {
 		return id;
