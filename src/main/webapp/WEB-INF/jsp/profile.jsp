@@ -13,7 +13,7 @@
 <body style="background-color: #E7E7E7">
 	<%@include file="/WEB-INF/include/menu.incl" %>
 	
-		<div class="container mt-5 p-4" style="width: 22%; background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0,0,0,0.63); border-radius: 5px;">
+		<div class="container mt-5 p-4 w-25" style=" background-color: #F2F2F2; box-shadow: 1px 4px 81px -4px rgba(0,0,0,0.63); border-radius: 5px;">
 
 			<div class="row justify-content-center">
 				<img class="justify-content-center" src="https://cdn1.iconfinder.com/data/icons/pinterest-ui-glyph/48/Sed-01-256.png" height="120" width="120">
@@ -38,9 +38,25 @@
 				<div class="col font-weight-bold"><s:message code='admin.users.column.email' /></div>
 				<div class="col"><c:out value="${user.email }"/></div>
 			</div>
-			<div class="row">
+			<div class="row mb-3">
 				<div class="col font-weight-bold"><s:message code='admin.users.column.date' /></div>
 				<div class="col"><c:out value="${user.registerDate }"/></div>
+			</div>
+			<div class="row mb-3">
+				<div class="col font-weight-bold"><s:message code='register.city' /></div>
+				<div class="col"><c:out value="${user.address.city }"/></div>
+			</div>
+			<div class="row mb-3">
+				<div class="col font-weight-bold"><s:message code='register.postalcode' /></div>
+				<div class="col"><c:out value="${user.address.postal_code }"/></div>
+			</div>
+			<div class="row mb-3">
+				<div class="col font-weight-bold"><s:message code='register.street' /></div>
+				<div class="col"><c:out value="${user.address.street }"/></div>
+			</div>
+			<div class="row">
+				<div class="col font-weight-bold"><s:message code='register.streetnumber' /></div>
+				<div class="col"><c:out value="${user.address.number }"/></div>
 			</div>
 			<div class="row justify-content-center pt-4">
 				<a class="btn btn-dark" href="/profile/edit"><s:message code='user.profile.edit'/></a>

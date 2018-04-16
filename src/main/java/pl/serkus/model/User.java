@@ -38,24 +38,27 @@ public class User {
 	private Address address;
 	
 	@Column(name = "email")
-	@Email(message = "Podaj adres email")
-	@NotEmpty(message = "Email jest wymagany")
+	//@Email(message = "Podaj adres email")
+	//@NotEmpty(message = "Email jest wymagany")
 	private String email;
 	
 	@Column(name = "password")
-	@Length(min = 5, message = "Hasło musi zawierać min. 5 znaków")
-	@NotEmpty(message = "Hasło jest wymagane")
+	//@Length(min = 5, message = "Hasło musi zawierać min. 5 znaków")
+	//@NotEmpty(message = "Hasło jest wymagane")
 	private String password;
 	
-	@NotEmpty(message = "Podaj swoje imię")
+	@Transient
+	private String passwordCheck;
+	
+	//@NotEmpty(message = "Podaj swoje imię")
 	@Column(name = "user_name")
 	private String name;
 	
-	@NotEmpty(message = "Podaj swoje nazwisko")
+	//@NotEmpty(message = "Podaj swoje nazwisko")
 	@Column(name = "user_surname")
 	private String surname;
 	
-	@NotEmpty(message = "Podaj swój wiek")
+	//@NotEmpty(message = "Podaj swój wiek")
 	@Column(name = "age")
 	private String age;
 	
@@ -64,9 +67,6 @@ public class User {
 	
 	@Column(name = "active")
 	private boolean active;
-	
-	@Transient
-	private String passwordCheck;
 	
 	@ManyToMany(cascade =
         {

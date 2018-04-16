@@ -9,6 +9,8 @@ public interface UserService {
 	
 	public void saveUser(User user);
 	
+	public void saveUserEdited(User user);
+	
 	public List<User> findAll();
 	
 	public Page<User> findAllPages(Pageable pageable);

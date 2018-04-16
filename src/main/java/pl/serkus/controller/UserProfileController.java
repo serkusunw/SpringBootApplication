@@ -1,17 +1,17 @@
 package pl.serkus.controller;
 
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import pl.serkus.model.User;
 import pl.serkus.service.UserService;
+import pl.serkus.validator.UserEditValidator;
 
 @Controller
 public class UserProfileController {
@@ -47,13 +47,19 @@ public class UserProfileController {
 	
 	@RequestMapping("/user/update")
 	@Secured(value = {"ROLE_USER"})
-	public String updateUserProfile(Model model, @Valid User user, BindingResult result) {
+	public String updateUserProfile(Model model, User user, BindingResult result) {
 		
 		String returnPage = null;
 
-		if(!user.getPassword().equals(user.getPasswordCheck())) {
-			result.rejectValue("passwordCheck", "error.wrongPassword");
+		new UserEditValidator().validate(user, result);
+		
+		if(user.getPassword().length() == 0  && user.getPasswordCheck().length() == 0)
+		{		
+			String username = getCurrentUserName();
+			User u = userService.findUserByEmail(username);
+			user.setPassword(u.getPassword());
 		}
+		
 		if(result.hasErrors()) {
 			user.setPassword(user.getPassword());
 			model.addAttribute("user", user);
@@ -61,7 +67,7 @@ public class UserProfileController {
 			returnPage = "profileEdit";
 		}
 		else {
-			userService.saveUser(user);
+			userService.saveUserEdited(user);
 			
 			returnPage = "profile";
 		}

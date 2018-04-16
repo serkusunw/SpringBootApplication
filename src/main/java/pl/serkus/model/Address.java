@@ -26,17 +26,17 @@ public class Address {
 	@Column(name = "postal_code")
 	private String postal_code;
 	
-	@Column(name = "street_number")
-	private int street_number;
+	@Column(name = "number")
+	private String number;
 	
 	@OneToOne(mappedBy="address")
 	private User user;
 	
-	public Address(String city, String street, String postal_code, int street_number) {
+	public Address(String city, String street, String postal_code, String number) {
 		this.city = city;
 		this.street = street;
 		this.postal_code = postal_code;
-		this.street_number = street_number;
+		this.number = number;
 	}
 	
 	
@@ -92,14 +92,12 @@ public class Address {
 	}
 
 
-	public int getStreet_number() {
-		return street_number;
+	public String getNumber() {
+		return number;
 	}
 
 
-	public void setStreet_number(int street_number) {
-		this.street_number = street_number;
+	public void setNumber(String number) {
+		this.number = number;
 	}
-	
-	
 }

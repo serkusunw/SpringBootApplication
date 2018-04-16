@@ -30,7 +30,7 @@ public class RegisterPageController {
 	@RequestMapping(value = "/adduser")
 	public String registerUserAction(@Valid User user, BindingResult result, Model model) {
 		String returnPage = null;
-
+		
 		User receivedUser = userService.findUserByEmail(user.getEmail());
 		if (receivedUser != null) {
 			result.rejectValue("email", "error.emailExists");

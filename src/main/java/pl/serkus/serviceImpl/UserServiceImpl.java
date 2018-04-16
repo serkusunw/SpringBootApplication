@@ -42,6 +42,15 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public void saveUserEdited(User user) {
+		
+		Role role = roleRepository.findByRole("ROLE_USER");
+		user.setRoles(new HashSet<Role>(Arrays.asList(role)));
+		
+		userRepository.save(user);
+	}
+	
+	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
