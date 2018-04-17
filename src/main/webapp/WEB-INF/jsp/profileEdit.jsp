@@ -31,23 +31,27 @@
 			<div class="form-group">
 				<label for="email"><s:message code="register.name" /></label>
 				<sf:input path="name" type="text" id="name" class="form-control" />
+				<sf:errors path="name" class="text-danger" />
 			</div>
 
 			<div class="form-group">
 				<label for="surname"><s:message code="register.surname" /></label>
 				<sf:input path="surname" type="text" id="surname"
 					class="form-control" />
+				<sf:errors path="surname" class="text-danger" />
 			</div>
 
 			<div class="form-group">
 				<label for="age"><s:message code="register.age" /></label>
-				<sf:input path="age" type="date" id="age" class="form-control" />
+				<sf:input path="date" type="date" id="age" class="form-control" />
+				<sf:errors path="age" class="text-danger" />
 			</div>
 
 			<div class="form-group">
 				<label for="city"><s:message code="register.city" /></label>
 				<sf:input path="address.city" type="text" id="city"
 					class="form-control" />
+				<sf:errors path="address.city" class="text-danger" />
 			</div>
 
 			<div class="form-group">
@@ -55,18 +59,21 @@
 						code="register.postalcode" /></label>
 				<sf:input path="address.postal_code" type="text" id="postalcode"
 					class="form-control" />
+				<sf:errors path="address.postal_code" class="text-danger" />
 			</div>
 
 			<div class="form-group">
 				<label for="street"><s:message code="register.street" /></label>
 				<sf:input path="address.street" type="text" id="street"
 					class="form-control" />
+				<sf:errors path="address.street" class="text-danger" />
 			</div>
 
 			<div class="form-group">
 				<label for="number"><s:message code="register.streetnumber" /></label>
 				<sf:input path="address.number" type="text" id="number"
 					class="form-control" />
+				<sf:errors path="address.number" class="text-danger" />
 			</div>
 			
 			<div class="form-group">

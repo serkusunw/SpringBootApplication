@@ -1,5 +1,9 @@
 package pl.serkus.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -37,7 +41,7 @@ public class UserProfileController {
 		
 		String username = getCurrentUserName();
 		User user = userService.findUserByEmail(username);
-		
+		user.setDate(user.getAge().toString());
 		user.setPassword(null);
 		model.addAttribute("user", user);
 
@@ -49,6 +53,7 @@ public class UserProfileController {
 	public String updateUserProfile(Model model, User user, BindingResult result) {
 		
 		String returnPage = null;
+		Boolean checkIfPasswordEmpty = false;
 
 		new UserEditValidator().validate(user, result);
 		
@@ -57,16 +62,23 @@ public class UserProfileController {
 			String username = getCurrentUserName();
 			User u = userService.findUserByEmail(username);
 			user.setPassword(u.getPassword());
+			checkIfPasswordEmpty = true;
 		}
 		
 		if(result.hasErrors()) {
-			user.setPassword(user.getPassword());
+			user.setPassword("");
 			model.addAttribute("user", user);
 			
 			returnPage = "profileEdit";
 		}
 		else {
-			userService.saveUserEdited(user);
+			user.setAge(Date.valueOf(LocalDate.parse(user.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+			if(checkIfPasswordEmpty) {
+				userService.saveUserEdited(user);
+			}
+			else{
+				userService.saveUser(user);
+			}
 			
 			returnPage = "profile";
 		}
