@@ -58,6 +58,9 @@
 							<c:when test="${user.roleId == 2}">
 								<font color="#ea3500"><b><s:message code="admin.users.column.role.admin" /></b></font>
 							</c:when>
+							<c:when test="${user.roleId == 3}">
+								<font color="#0b7c84"><b><s:message code="admin.users.column.role.librarian" /></b></font>
+							</c:when>
 						</c:choose></td>
 						<td>
 							<a href="/admin/edit/${user.id}" style="color: black" rel="tooltip" title="<s:message code="admin.user.edit.title"/>"><svg id="i-compose" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -82,7 +85,6 @@
 								});
 							</script> 
 						</td>
-						
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -23,7 +23,7 @@ public class UserProfileController {
 	UserService userService;
 	
 	@RequestMapping("/profile")
-	@Secured(value = {"ROLE_USER"})
+	@Secured(value = {"ROLE_USER","ROLE_LIBRARIAN"})
 	public String getProfilePage(Model model) {
 		
 		String username = getCurrentUserName();
@@ -36,7 +36,7 @@ public class UserProfileController {
 	}
 	
 	@RequestMapping("/profile/edit")
-	@Secured(value = {"ROLE_USER"})
+	@Secured(value = {"ROLE_USER","ROLE_LIBRARIAN"})
 	public String getEditProfilePage(Model model) {
 		
 		String username = getCurrentUserName();
@@ -49,7 +49,7 @@ public class UserProfileController {
 	}
 	
 	@RequestMapping("/user/update")
-	@Secured(value = {"ROLE_USER"})
+	@Secured(value = {"ROLE_USER","ROLE_LIBRARIAN"})
 	public String updateUserProfile(Model model, User user, BindingResult result) {
 		
 		String returnPage = null;
@@ -66,9 +66,8 @@ public class UserProfileController {
 		}
 		
 		if(result.hasErrors()) {
-			user.setPassword("");
+			user.setPassword(null);
 			model.addAttribute("user", user);
-			
 			returnPage = "profileEdit";
 		}
 		else {

@@ -1,48 +1,53 @@
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="background-color: #e3f2fd;">
-  <a class="navbar-brand" href="/"><s:message code="page.title"/></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #0d3451;">
+	<a class="navbar-brand" href="/"><s:message code="page.title" /></a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+		aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-    	<sec:authorize access="hasRole('ANONYMOUS')">
-	        <li class="nav-item">
-	        	<a class="btn btn-info mr-2" href="/register"><s:message code="page.title.register"/></a>
-	      	</li>
-      	</sec:authorize>
-      	
-      	<sec:authorize access="hasRole('ANONYMOUS')">
-		    <li class="nav-item">
-	  	   	 	<a class="btn btn-info mr-2" href="/login"><s:message code="page.title.login"/></a>
-	     	</li>
-      	</sec:authorize>
-    </ul>
-    
-    <ul class="navbar-nav">
-       	<sec:authorize access="isAuthenticated() and not hasRole('ROLE_ADMIN')">
-	    	<li class="nav-item">
-	    		<a class="btn btn-info mr-2" href="/profile"><s:message code="user.profile.yourprofile"/></a>
-	    	</li>
-    	</sec:authorize>
-     	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	    	<li class="nav-item">
-	    		<a class="btn btn-warning mr-2" href="/admin"><s:message code="admin.title"/></a>
-	    	</li>
-	    	
-    	</sec:authorize>
-   	   <sec:authorize access="isAuthenticated()">
-	    	<li class="nav-item">
-	    		<a class="btn btn-danger mr-2" href="/logout"><s:message code="page.title.logout"/></a>
-	    	</li>
-    	</sec:authorize>
-    	
-   	    <li class="nav-item">
-    		<a class="btn btn-outline-success mr-2" href="/?lang=pl">PL</a>
-    	</li>
- 	    <li class="nav-item">
-    		<a class="btn btn-outline-success" href="/?lang=en">EN</a>
-    	</li>
-    </ul>
-  </div>
+	<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<sec:authorize access="hasRole('ANONYMOUS')">
+				<li class="nav-item"><a class="btn btn-info mr-2"
+					href="/register"><s:message code="page.title.register" /></a></li>
+			</sec:authorize>
+
+			<sec:authorize access="hasRole('ANONYMOUS')">
+				<li class="nav-item"><a class="btn btn-info mr-2" href="/login"><s:message
+							code="page.title.login" /></a></li>
+			</sec:authorize>
+
+			<sec:authorize access="isAuthenticated() and hasRole('ROLE_LIBRARIAN')">
+				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/showBooks"><s:message
+							code="librarian.showBooks" /></a></li>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated() and hasRole('ROLE_LIBRARIAN')">
+				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/manageBooks"><s:message
+							code="librarian.manageBooks" /></a></li>
+			</sec:authorize>
+		</ul>
+
+		<ul class="navbar-nav">
+			<sec:authorize
+				access="isAuthenticated() and not hasRole('ROLE_ADMIN')">
+				<li class="nav-item"><a class="btn btn-info mr-2"
+					href="/profile"><s:message code="user.profile.yourprofile" /></a></li>
+			</sec:authorize>
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<li class="nav-item"><a class="btn btn-warning mr-2"
+					href="/admin"><s:message code="admin.title" /></a></li>
+
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+				<li class="nav-item"><a class="btn btn-danger mr-2"
+					href="/logout"><s:message code="page.title.logout" /></a></li>
+			</sec:authorize>
+
+			<li class="nav-item"><a class="btn btn-outline-success mr-2"
+				href="/?lang=pl">PL</a></li>
+			<li class="nav-item"><a class="btn btn-outline-success"
+				href="/?lang=en">EN</a></li>
+		</ul>
+	</div>
 </nav>

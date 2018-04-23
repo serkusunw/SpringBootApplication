@@ -121,7 +121,7 @@ public class AdminPageController {
 		
 		User user = relockUser(id, false);
 		
-		userService.updateUser("ROLE_USER", user);
+		userService.updateUser(user.getRoles().iterator().next().getRole(), user);
 		
 		return "redirect:/admin/users";
 	}
@@ -131,7 +131,7 @@ public class AdminPageController {
 		
 		User user = relockUser(id, true);
 		
-		userService.updateUser("ROLE_USER", user);
+		userService.updateUser(user.getRoles().iterator().next().getRole(), user);
 		
 		return "redirect:/admin/users";
 	}

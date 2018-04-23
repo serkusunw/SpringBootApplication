@@ -1,8 +1,13 @@
 package pl.serkus.service;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import pl.serkus.model.Book;
+import pl.serkus.model.Category;
 import pl.serkus.model.User;
 
 public interface UserService {
