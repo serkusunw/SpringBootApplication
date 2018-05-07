@@ -37,8 +37,6 @@ public class Author {
 		this.surname = surname;
 	}
 
-
-
 	public int getId() {
 		return id;
 	}

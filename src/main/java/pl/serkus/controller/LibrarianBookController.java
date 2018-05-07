@@ -1,6 +1,22 @@
 package pl.serkus.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Date;
+import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,10 +25,18 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import pl.serkus.model.Author;
+import pl.serkus.model.Book;
 import pl.serkus.model.Category;
+import pl.serkus.model.PublishingHouse;
 import pl.serkus.service.LibrarianService;
 import pl.serkus.service.UserService;
+import pl.serkus.validator.LibrarianAuthorValidator;
 import pl.serkus.validator.LibrarianCategoryValidator;
+import pl.serkus.validator.LibrarianNewBookValidator;
+import pl.serkus.validator.LibrarianPublishingHouseValidator;
 
 @Controller
 public class LibrarianBookController {
@@ -37,15 +61,6 @@ public class LibrarianBookController {
 		return "manageBooks";
 	}
 	
-	@RequestMapping(value = "/manageBooks/category/deleteform")
-	public String showDeleteCategoryPage(Model model) {
-		Category category = new Category();
-		
-		model.addAttribute("operation", "categoryDelete");
-		model.addAttribute("category", category);
-		return "manageBooks";
-	}
-	
 	@RequestMapping(value = "/manageBooks/category/add")
 	public String addCategory(Category category, Model model, BindingResult result) {
 		new LibrarianCategoryValidator().validate(category, result);
@@ -61,7 +76,18 @@ public class LibrarianBookController {
 			}
 		}
 		model.addAttribute("operation", "categoryAdd");
+		category.setId(0);
+		model.addAttribute("category", category);
 		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/category/deleteform")
+	public String showDeleteCategoryPage(Model model) {
+		Category category = new Category();
+		
+		model.addAttribute("operation", "categoryDelete");
+		model.addAttribute("category", category);
 		return "manageBooks";
 	}
 	
@@ -81,6 +107,8 @@ public class LibrarianBookController {
 		}
 		
 		model.addAttribute("operation", "categoryDelete");
+		category.setId(0);
+		model.addAttribute("category", category);
 		
 		return "manageBooks";
 	}
@@ -95,6 +123,290 @@ public class LibrarianBookController {
 		
 		model.addAttribute("operation", "categoriesShow");
 		model.addAttribute("categories", categoryList);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", currentPage);
+		
+		return "manageBooks";
+	}
+	
+	
+	@RequestMapping(value = "/manageBooks/author/addform")
+	public String showAddAuthorPage(Model model) {
+		Author author = new Author();
+		
+		model.addAttribute("operation", "authorAdd");
+		model.addAttribute("author", author);
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/author/add")
+	public String addAuthor(Author author, Model model, BindingResult result) {
+		new LibrarianAuthorValidator().validate(author, result);
+		
+		if(!result.hasErrors()) {
+			Author auth = librarianService.findByAuthor(author);
+			if(auth == null) {
+				librarianService.addAuthor(author);
+				model.addAttribute("successAdd", 1);
+			}
+			else {
+				result.rejectValue("surname", "error.librarian.author.name.exists");
+			}
+		}
+		model.addAttribute("operation", "authorAdd");
+		author.setId(0);
+		model.addAttribute("author", author);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/author/deleteform")
+	public String showDeleteAuthorPage(Model model) {
+		Author author = new Author();
+		
+		model.addAttribute("operation", "authorDelete");
+		model.addAttribute("author", author);
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/author/delete")
+	public String deleteAuthor(Author author, Model model, BindingResult result) {
+		new LibrarianAuthorValidator().validate(author, result);
+		
+		if(!result.hasErrors()) {
+			Author auth = librarianService.findByAuthor(author);
+			if(auth != null) {
+				librarianService.deleteAuthor(auth);
+				model.addAttribute("successDelete", 1);
+			}
+			else {
+				result.rejectValue("surname", "error.librarian.author.name.notexists");
+			}
+		}
+		
+		model.addAttribute("operation", "authorDelete");
+		author.setId(0);
+		model.addAttribute("author", author);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/author/show/{page}")
+	public String showAuthors(@PathVariable("page") int page, Model model) {
+		int elements = 5;
+		Page<Author> pages = librarianService.findAllAuthorsPages(PageRequest.of(page, elements));
+		int totalPages = pages.getTotalPages();
+		int currentPage = pages.getNumber();
+		List<Author> authorsList = pages.getContent();
+		
+		model.addAttribute("operation", "authorsShow");
+		model.addAttribute("authors", authorsList);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", currentPage);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/book/deleteform")
+	public String showDeleteBookPage(Model model) {
+		
+		Book book = new Book();
+		Map<Integer, String> authorMap = new HashMap<>();
+		
+		for(Author author : librarianService.findAllAuthors()) {
+			authorMap.put(author.getId(), author.getName() + " " + author.getSurname());
+		}
+		
+		model.addAttribute("operation", "bookDelete");
+		model.addAttribute("authorMap", authorMap);
+		model.addAttribute("book", book);
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/book/delete")
+	public String deleteBook(Book book, Model model, BindingResult result) {
+		//new LibrarianAuthorValidator().validate(author, result);
+		
+		book.setAuthor(librarianService.findAuthorById(book.getAuthorId()));
+		
+		if(!result.hasErrors()) {
+			Book bk = librarianService.findByBook(book);
+
+			if(bk != null) {
+				librarianService.deleteBook(bk);
+				model.addAttribute("successDelete", 1);
+			}
+			else {
+				result.rejectValue("title", "error.librarian.author.name.notexists");
+			}
+		}
+		
+		model.addAttribute("operation", "bookDelete");
+		book.setId(0);
+		model.addAttribute("book", book);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/book/addform")
+	public String showAddBookPage(Model model) {
+		
+		Book book = new Book();
+		Map<Integer, String> authorMap = new HashMap<>();
+		Map<Integer, String> categoryMap = new HashMap<>();
+		Map<Integer, String> publishingHousesMap = new HashMap<>();
+		
+		for(Author author : librarianService.findAllAuthors()) {
+			authorMap.put(author.getId(), author.getName() + " " + author.getSurname());
+		}
+		
+		for(Category category : librarianService.findAllCategories()) {
+			categoryMap.put(category.getId(), category.getName());
+		}
+		
+		for(PublishingHouse publishingHouse : librarianService.findAllPublishingHouses()) {
+			publishingHousesMap.put(publishingHouse.getId(), publishingHouse.getName());
+		}
+		
+		model.addAttribute("operation", "bookAdd");
+		model.addAttribute("authorMap", authorMap);
+		model.addAttribute("categoryMap", categoryMap);
+		model.addAttribute("publishingHouseMap", publishingHousesMap);
+		model.addAttribute("book", book);
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/book/add")
+	public String addBook(/*@RequestParam("file") MultipartFile file, */Book book, BindingResult result, Model model) {
+		
+		final String path = "C:/Users/serku/Desktop/x";//"src/main/resources/covers/book/";
+		new LibrarianNewBookValidator().validate(book, result);
+		
+		book.setAuthor(librarianService.findAuthorById(book.getAuthorId()));
+		book.setCategory(librarianService.findCategoryById(book.getCategoryId()));
+		book.setPublishingHouse(librarianService.findPublishingHouseById(book.getPublishingHouseId()));
+		
+		if(!result.hasErrors()) {
+			Book bk = librarianService.findByBook(book);
+			if(bk == null) {
+				String bookName = book.getImage().getOriginalFilename();
+				String[] extension = bookName.split("\\.");
+				bookName = UUID.randomUUID().toString() + "." + extension[extension.length-1];
+				try {
+					File transferFile = new File(path + "/" + bookName);
+					book.getImage().transferTo(transferFile);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				book.setImage_name(bookName);
+				book.setRelease_date(Date.valueOf(LocalDate.parse(book.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+				librarianService.addBook(book);
+				model.addAttribute("successAdd", 1);
+			}
+			else {
+				result.rejectValue("title", "error.librarian.author.name.notexists");
+			}
+		}
+		
+		Map<Integer, String> authorMap = new HashMap<>();
+		Map<Integer, String> categoryMap = new HashMap<>();
+		Map<Integer, String> publishingHousesMap = new HashMap<>();
+		
+		for(Author author : librarianService.findAllAuthors()) {
+			authorMap.put(author.getId(), author.getName() + " " + author.getSurname());
+		}
+		
+		for(Category category : librarianService.findAllCategories()) {
+			categoryMap.put(category.getId(), category.getName());
+		}
+		
+		for(PublishingHouse publishingHouse : librarianService.findAllPublishingHouses()) {
+			publishingHousesMap.put(publishingHouse.getId(), publishingHouse.getName());
+		}
+		
+		model.addAttribute("authorMap", authorMap);
+		model.addAttribute("categoryMap", categoryMap);
+		model.addAttribute("publishingHouseMap", publishingHousesMap);
+		model.addAttribute("operation", "bookAdd");
+		book.setId(0);
+		model.addAttribute("book", book);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/publishinghouse/addform")
+	public String showAddPublishingHousePage(Model model) {
+		
+		model.addAttribute("operation", "publishingHouseAdd");
+		model.addAttribute("publishingHouse", new PublishingHouse());
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/publishinghouse/add")
+	public String addPublishingHouse(PublishingHouse publishingHouse, Model model, BindingResult result) {
+		new LibrarianPublishingHouseValidator().validate(publishingHouse, result);
+		
+		if(!result.hasErrors()) {
+			PublishingHouse pHouse = librarianService.findByPublishingHouse(publishingHouse);
+			if(pHouse == null) {
+				librarianService.addPublishingHouse(publishingHouse);
+				model.addAttribute("successAdd", 1);
+			}
+			else {
+				result.rejectValue("name", "error.librarian.publishingHouse.exists");
+			}
+		}
+
+		model.addAttribute("operation", "publishingHouseAdd");
+		publishingHouse.setId(0);
+		model.addAttribute("publishingHouse", publishingHouse);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/publishinghouse/deleteform")
+	public String showDeletePublishingHousePage(Model model) {
+		
+		model.addAttribute("operation", "publishingHouseDelete");
+		model.addAttribute("publishingHouse", new PublishingHouse());
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/publishinghouse/delete")
+	public String deletePublishingHouse(PublishingHouse publishingHouse, Model model, BindingResult result) {
+		
+		new LibrarianPublishingHouseValidator().validate(publishingHouse, result);
+		
+		if(!result.hasErrors()) {
+			PublishingHouse pHouse = librarianService.findByPublishingHouse(publishingHouse);
+			if(pHouse != null) {
+				librarianService.deletePublishingHouse(pHouse);
+				model.addAttribute("successDelete", 1);
+			}
+			else {
+				result.rejectValue("name", "error.librarian.publishingHouse.notexists");
+			}
+		}
+		model.addAttribute("operation", "publishingHouseDelete");
+		publishingHouse.setId(0);
+		model.addAttribute("publishingHouse", publishingHouse);
+		
+		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/manageBooks/publishinghouse/show/{page}")
+	public String showPublishingHouses(@PathVariable("page") int page, Model model) {
+		int elements = 5;
+		Page<PublishingHouse> pages = librarianService.findAllPublishingHousesPages(PageRequest.of(page, elements));
+		int totalPages = pages.getTotalPages();
+		int currentPage = pages.getNumber();
+		List<PublishingHouse> publishingHousesList = pages.getContent();
+		
+		model.addAttribute("operation", "publishingHousesShow");
+		model.addAttribute("publishingHouses", publishingHousesList);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("currentPage", currentPage);
 		

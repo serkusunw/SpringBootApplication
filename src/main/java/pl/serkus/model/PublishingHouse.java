@@ -1,6 +1,7 @@
 package pl.serkus.model;
 
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,25 +11,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "category")
-public class Category {
-	
+@Table(name  = "publishing_House")
+public class PublishingHouse {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "category_id")
+	@Column(name = "publishing_house_id")
 	private int id;
 	
 	@Column(name = "name")
 	private String name;
 	
 	@OneToMany
-	private Set<Book> books;
+	private Set<Book> book;
 
-	public Category() {
-
+	public PublishingHouse() {
 	}
 	
-	public Category(String name) {
+	public PublishingHouse(String name) {
 		this.name = name;
 	}
 

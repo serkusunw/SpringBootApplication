@@ -1,7 +1,7 @@
 package pl.serkus.model;
 
+import java.io.File;
 import java.sql.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "book")
@@ -24,9 +27,6 @@ public class Book {
 	@Column(name = "title")
 	private String title;
 	
-	@Column(name = "publishing_house")
-	private String publishing_house;
-	
 	@Column(name = "description")
 	private String description;
 	
@@ -35,6 +35,9 @@ public class Book {
 	
 	@Column(name = "count")
 	private int count;
+	
+	@Column(name = "image_name")
+	private String image_name;
 	
 	@ManyToOne(cascade =
         {
@@ -56,22 +59,81 @@ public class Book {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
+	@ManyToOne(cascade =
+        {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
+        })
+	@JoinColumn(name = "publishing_house_id")
+	private PublishingHouse publishingHouse;
+	
+	@Transient
+	private int authorId;
+	
+	@Transient
+	private int categoryId;
+	
+	@Transient
+	private int publishingHouseId;
+	
+	@Transient
+	private String date;
+	
+	@Transient
+	private MultipartFile image;
+	
 	public Book(){
-		
 	}
 
-	public Book(String title, String publishing_house, String description, Date release_date, int count, Author author,
-			Category category) {
-		this.title = title;
-		this.publishing_house = publishing_house;
-		this.description = description;
-		this.release_date = release_date;
-		this.count = count;
-		this.author = author;
+	public MultipartFile getImage() {
+		return image;
+	}
+
+	public void setImage(MultipartFile image) {
+		this.image = image;
+	}
+
+	public String getImage_name() {
+		return image_name;
+	}
+
+	public void setImage_name(String image_name) {
+		this.image_name = image_name;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
+	public int getCategoryId() {
+		return categoryId;
+	}
 
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public int getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
+	}
 
 	public int getId() {
 		return id;
@@ -87,14 +149,6 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getPublishing_house() {
-		return publishing_house;
-	}
-
-	public void setPublishing_house(String publishing_house) {
-		this.publishing_house = publishing_house;
 	}
 
 	public String getDescription() {
@@ -127,5 +181,21 @@ public class Book {
 
 	public void setAuthor(Author author) {
 		this.author = author;
+	}
+
+	public PublishingHouse getPublishingHouse() {
+		return publishingHouse;
+	}
+
+	public void setPublishingHouse(PublishingHouse publishingHouse) {
+		this.publishingHouse = publishingHouse;
+	}
+
+	public int getPublishingHouseId() {
+		return publishingHouseId;
+	}
+
+	public void setPublishingHouseId(int publishingHouseId) {
+		this.publishingHouseId = publishingHouseId;
 	}
 }
