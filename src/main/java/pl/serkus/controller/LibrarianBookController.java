@@ -1,22 +1,13 @@
 package pl.serkus.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.Date;
-import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import pl.serkus.model.Author;
 import pl.serkus.model.Book;
 import pl.serkus.model.Category;
@@ -277,9 +266,9 @@ public class LibrarianBookController {
 	}
 	
 	@RequestMapping(value = "/manageBooks/book/add")
-	public String addBook(/*@RequestParam("file") MultipartFile file, */Book book, BindingResult result, Model model) {
+	public String addBook(Book book, BindingResult result, Model model) {
 		
-		final String path = "C:/Users/serku/Desktop/x";//"src/main/resources/covers/book/";
+		final String path = "C:/Users/serku/Documents/workspace-sts-3.9.2.RELEASE/SpringBootApplication/src/main/webapp/WEB-INF/images";
 		new LibrarianNewBookValidator().validate(book, result);
 		
 		book.setAuthor(librarianService.findAuthorById(book.getAuthorId()));

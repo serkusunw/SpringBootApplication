@@ -1,6 +1,8 @@
 package pl.serkus.serviceImpl;
 
 import java.util.List;
+import java.util.Random;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -153,5 +155,31 @@ public class LibrarianServiceImpl implements LibrarianService{
 	@Override
 	public PublishingHouse findPublishingHouseById(int id) {
 		return publishingHouseRepository.findById(id).get();
+	}
+
+	@Override
+	public Book getRandomBook() {
+		Random generator = new Random();
+		List<Book> books = bookRepository.findAll();
+		int size = books.size();
+		if(books.size() > 0){
+			if(books.size() == 0)
+				size = 1;
+			Book book = books.get(generator.nextInt(size));
+			return book;
+		}
+		else
+			return null;
+	}
+
+	@Override
+	public Page<Book> findAllBooksByCategory(int id, Pageable pageable) {
+		
+		return bookRepository.findByCategoryId(id, pageable);
+	}
+
+	@Override
+	public Book findBookById(int id) {
+		return bookRepository.findById(id).get();
 	}
 }

@@ -14,6 +14,12 @@ public interface LibrarianService {
 	
 	public Book findBookByTitle(String title);
 	
+	public Book findBookById(int id);
+	
+	public Page<Book> findAllBooksByCategory(int id, Pageable pageable);
+	
+	public Book getRandomBook();
+	
 	public void deleteBook(Book book);
 	
 	public Category findByCategory(Category category);

@@ -1,6 +1,5 @@
 package pl.serkus.model;
 
-import java.io.File;
 import java.sql.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +26,7 @@ public class Book {
 	@Column(name = "title")
 	private String title;
 	
-	@Column(name = "description")
+	@Column(name = "description", length = 10000)
 	private String description;
 	
 	@Column(name = "release_date")
