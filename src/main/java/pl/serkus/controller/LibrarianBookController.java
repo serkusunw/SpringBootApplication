@@ -11,6 +11,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,8 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.serkus.model.Author;
 import pl.serkus.model.Book;
+import pl.serkus.model.BorrowedBooks;
 import pl.serkus.model.Category;
 import pl.serkus.model.PublishingHouse;
+import pl.serkus.model.User;
+import pl.serkus.repository.BookRepository;
 import pl.serkus.service.LibrarianService;
 import pl.serkus.service.UserService;
 import pl.serkus.validator.LibrarianAuthorValidator;
@@ -32,6 +37,9 @@ public class LibrarianBookController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	BookRepository bookRepository;
 	
 	@Autowired
 	LibrarianService librarianService;
@@ -265,6 +273,13 @@ public class LibrarianBookController {
 		return "manageBooks";
 	}
 	
+	public String getCurrentUserName() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		
+		return username;
+	}
+	
 	@RequestMapping(value = "/manageBooks/book/add")
 	public String addBook(Book book, BindingResult result, Model model) {
 		
@@ -290,7 +305,26 @@ public class LibrarianBookController {
 				}
 				book.setImage_name(bookName);
 				book.setRelease_date(Date.valueOf(LocalDate.parse(book.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-				librarianService.addBook(book);
+
+				
+				
+				// testy
+				librarianService.saveBook(book);
+				
+				BorrowedBooks borrowedBooks = new BorrowedBooks();
+				User currentUser = userService.findUserByEmail(getCurrentUserName());
+				borrowedBooks.setBook(book);
+				borrowedBooks.setUser(currentUser);
+				currentUser.getBorrowedBooks().add(borrowedBooks);
+
+				librarianService.saveBook(book);
+				userService.updateUserData(currentUser);
+				
+				book.getBorrowedBooks().add(borrowedBooks);
+				
+				librarianService.saveBook(book);
+			
+			// testy
 				model.addAttribute("successAdd", 1);
 			}
 			else {

@@ -1,22 +1,30 @@
 package pl.serkus.serviceImpl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
-
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.serkus.model.Author;
 import pl.serkus.model.Book;
 import pl.serkus.model.Category;
 import pl.serkus.model.PublishingHouse;
+import pl.serkus.model.ReservedBooks;
+import pl.serkus.model.User;
 import pl.serkus.repository.AuthorRepository;
 import pl.serkus.repository.BookRepository;
 import pl.serkus.repository.CategoryRepository;
 import pl.serkus.repository.PublishingHouseRepository;
+import pl.serkus.repository.ReservedBooksRepository;
+import pl.serkus.repository.UserRepository;
 import pl.serkus.service.LibrarianService;
+import pl.serkus.service.UserService;
 
 @Service
 @Transactional
@@ -34,6 +42,12 @@ public class LibrarianServiceImpl implements LibrarianService{
 	@Autowired
 	PublishingHouseRepository publishingHouseRepository;
 	
+	@Autowired
+	ReservedBooksRepository reservedBooksRepository;
+	
+	@Autowired
+	UserService userService;
+	
 	@Override
 	public void saveBook(Book book) {
 		bookRepository.save(book);
@@ -42,6 +56,20 @@ public class LibrarianServiceImpl implements LibrarianService{
 	@Override
 	public void deleteBook(Book book) {
 		bookRepository.deleteById(book.getId());
+	}
+	
+	@Override
+	public void reserveBook(Book book) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		
+		ReservedBooks reservation = new ReservedBooks();
+		reservation.setBook(book);
+		reservation.setUser(user);
+		reservation.setReservationDate(Date.valueOf(LocalDate.now()));
+		
+		
+		reservedBooksRepository.save(reservation);
 	}
 
 	@Override

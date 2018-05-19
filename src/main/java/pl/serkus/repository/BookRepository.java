@@ -4,8 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 import pl.serkus.model.Book;
 
+@Repository("BookRepository")
 public interface BookRepository extends JpaRepository<Book, Integer>{
 	
 	@Query(value = "SELECT * FROM Book JOIN Author ON Book.author_id = Author.author_id WHERE Book.title = ?1 AND Author.name = ?2 AND Author.surname = ?3", nativeQuery = true)

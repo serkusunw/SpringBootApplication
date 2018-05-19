@@ -1,13 +1,10 @@
 package pl.serkus.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,16 +18,6 @@ public class PublishingHouse {
 	
 	@Column(name = "name")
 	private String name;
-	
-	@OneToMany
-	private Set<Book> book;
-
-	public PublishingHouse() {
-	}
-	
-	public PublishingHouse(String name) {
-		this.name = name;
-	}
 
 	public int getId() {
 		return id;

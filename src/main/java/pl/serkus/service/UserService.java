@@ -28,5 +28,7 @@ public interface UserService {
 	
 	public void updateUser(User user);
 	
+	public void updateUserData(User user);
+	
 	public void deleteUser(User user);
 }

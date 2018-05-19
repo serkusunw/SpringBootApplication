@@ -1,6 +1,5 @@
 package pl.serkus.controller;
 
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +33,7 @@ public class BooksPageController {
 	@RequestMapping("/showBooks/{category_id}/{page}")
 	public String showBooksPage(@PathVariable("category_id") int category_id, @PathVariable("page") int page, Model model) {
 		List<Category> categories = librarianService.findAllCategories();
-		final int resultsByPage = 1;
+		final int resultsByPage = 4;
 		Page<Book> pages = librarianService.findAllBooksByCategory(category_id, PageRequest.of(page, resultsByPage));
 		
 		int totalPages = pages.getTotalPages();
@@ -56,6 +55,23 @@ public class BooksPageController {
 		List<Category> categories = librarianService.findAllCategories();
 
 		Book book = librarianService.findBookById(book_id);
+		
+		model.addAttribute("operation", "showBook");
+		model.addAttribute("book", book);
+		model.addAttribute("categories", categories);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("currentcategory", category_id);
+		
+		return "showBooks";
+	}
+	
+	@RequestMapping("/showBooks/{category_id}/{page}/{book}/reservation")
+	public String reserveBook(@PathVariable("category_id") int category_id, @PathVariable("page") int page, @PathVariable("book") int book_id, Model model) {
+		List<Category> categories = librarianService.findAllCategories();
+
+		Book book = librarianService.findBookById(book_id);
+		
+		librarianService.reserveBook(book);
 		
 		model.addAttribute("operation", "showBook");
 		model.addAttribute("book", book);

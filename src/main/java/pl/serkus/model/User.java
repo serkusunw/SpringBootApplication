@@ -1,6 +1,7 @@
 package pl.serkus.model;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -35,27 +37,20 @@ public class User {
 	private Address address;
 	
 	@Column(name = "email")
-	//@Email(message = "Podaj adres email")
-	//@NotEmpty(message = "Email jest wymagany")
 	private String email;
 	
 	@Column(name = "password")
-	//@Length(min = 5, message = "Hasło musi zawierać min. 5 znaków")
-	//@NotEmpty(message = "Hasło jest wymagane")
 	private String password;
 	
 	@Transient
 	private String passwordCheck;
 	
-	//@NotEmpty(message = "Podaj swoje imię")
 	@Column(name = "user_name")
 	private String name;
 	
-	//@NotEmpty(message = "Podaj swoje nazwisko")
 	@Column(name = "user_surname")
 	private String surname;
 	
-	//@NotEmpty(message = "Podaj swój wiek")
 	@Column(name = "age")
 	private Date age;
 	
@@ -75,12 +70,27 @@ public class User {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 	
+	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
+	private Set<BorrowedBooks> borrowedBooks = new HashSet<>();
+	
+	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
+	private Set<ReservedBooks> reservedBooks = new HashSet<>();
+	
 	@Transient
 	private int roleId;
 	
 	@Transient
 	private String date;
 	
+	public Set<BorrowedBooks> getBorrowedBooks() {
+		return borrowedBooks;
+	}
+
+	public void setBorrowedBooks(Set<BorrowedBooks> borrowedBooks) {
+		this.borrowedBooks = borrowedBooks;
+	}
+
+
 	public User() {
 		
 	}

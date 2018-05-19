@@ -1,6 +1,9 @@
 package pl.serkus.model;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -68,6 +72,12 @@ public class Book {
 	@JoinColumn(name = "publishing_house_id")
 	private PublishingHouse publishingHouse;
 	
+	@OneToMany(mappedBy = "primaryKey.book", cascade = CascadeType.ALL)
+	private Set<BorrowedBooks> borrowedBooks = new HashSet<>();
+	
+	@OneToMany(mappedBy = "primaryKey.book", cascade = CascadeType.ALL)
+	private Set<ReservedBooks> reservedBooks = new HashSet<>();
+	
 	@Transient
 	private int authorId;
 	
@@ -84,6 +94,14 @@ public class Book {
 	private MultipartFile image;
 	
 	public Book(){
+	}
+
+	public Set<BorrowedBooks> getBorrowedBooks() {
+		return borrowedBooks;
+	}
+
+	public void setBorrowedBooks(Set<BorrowedBooks> borrowedBooks) {
+		this.borrowedBooks = borrowedBooks;
 	}
 
 	public MultipartFile getImage() {

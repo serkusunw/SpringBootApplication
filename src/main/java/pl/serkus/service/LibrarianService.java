@@ -12,6 +12,8 @@ public interface LibrarianService {
 	
 	public void saveBook(Book book);
 	
+	public void reserveBook(Book book);
+	
 	public Book findBookByTitle(String title);
 	
 	public Book findBookById(int id);

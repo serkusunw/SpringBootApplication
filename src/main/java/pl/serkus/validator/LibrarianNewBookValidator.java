@@ -22,8 +22,8 @@ public class LibrarianNewBookValidator implements Validator{
 		if(book.getTitle().length() == 0) {
 			err.rejectValue("title", "error.emptyField");
 		}
-		else if(book.getTitle().length() > 50){
-			err.rejectValue("name", "error.librarian.limit.50");
+		else if(book.getTitle().length() > 100){
+			err.rejectValue("title", "error.librarian.limit.50");
 		}
 		
 		if(book.getCount() < 1) {

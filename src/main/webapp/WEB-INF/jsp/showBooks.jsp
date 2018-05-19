@@ -19,7 +19,7 @@
 <body>
 	<%@include file="/WEB-INF/include/menu.incl" %>
 
-
+	
 	<div class="container-fluid px-5 pt-1 ">
 
 		<div class="row m-5">
@@ -42,14 +42,22 @@
 															<img class="card-img-top" src="/images/<c:url value="${book.image_name}"/>">
 															<div class="card-body d-flex flex-column text-center" style="height:100%;">
 																<h5 class="card-title"><c:out value="${book.title}"/></h5>
-																<small class="card-title"><c:out value="${book.release_date}"/></small>
-																<small class="text-muted mb-2"><c:out value="${book.publishingHouse.name}"/></small>
-																<h6 class="card-title"><s:message code="book.quantity.available"/><c:out value="${book.count}"/></h6>
-																<input type="button"
-																class="btn btn-dark btn-sm btn-block mt-auto"
-																onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage}/${book.id}'"
-																value="<s:message code="button.show.description"/>" />
-																<button type="button" class="btn btn-success btn-sm btn-block mt-auto">Zarezerwuj książkę</button>
+																
+																<div class="mt-auto"><small class="card-title"><c:out value="${book.release_date}"/></small>
+																<div class="mt-auto">
+																	<small class="text-muted mb-2"><c:out value="${book.publishingHouse.name}"/></small>
+																	<h6 class="card-title"><s:message code="book.quantity.available"/><c:out value="${book.count}"/></h6>
+																	<input type="button"
+																	class="btn btn-dark btn-sm btn-block"
+																	onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage}/${book.id}'"
+																	value="<s:message code="button.show.description"/>" />
+																	
+																	<input type="button"
+																	class="btn btn-success btn-sm btn-block"
+																	onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage}/${book.id}/reservation'"
+																	value="<s:message code="button.reservation"/>" />
+																</div>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -57,18 +65,24 @@
 										</div>
 
 										<div class="text-center>">
-											<c:if test="${currentPage > 0 }">
-												<input type="button"
-													class="btn btn-dark btn-block"
-													onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage-1}'"
-													value="<s:message code="button.previous"/>" />&nbsp;&nbsp;
-											</c:if>
-											<c:if test="${currentPage < totalPages-1 }">
-												<input type="button"
-													class="btn btn-dark btn-block" 
-													onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage+1}'"
-													value="<s:message code="button.next"/>" />
-											</c:if>
+											<div class="row">
+												<div class="col-6">
+												<c:if test="${currentPage > 0 }">
+														<input type="button"
+															class="btn btn-dark btn-block"
+															onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage-1}'"
+															value="<s:message code="button.previous"/>" />
+												</c:if>
+												</div>
+												<c:if test="${currentPage < totalPages-1 }">
+													<div class="col-6">
+														<input type="button"
+															class="btn btn-dark btn-block" 
+															onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage+1}'"
+															value="<s:message code="button.next"/>" />
+													</div>
+												</c:if>
+											</div>
 										</div>
 
 							</c:when>

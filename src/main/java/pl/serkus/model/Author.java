@@ -1,13 +1,10 @@
 package pl.serkus.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,9 +21,6 @@ public class Author {
 	
 	@Column(name = "surname")
 	private String surname;
-	
-	@OneToMany
-	private Set<Book> book;
 	
 	public Author(){
 		
@@ -59,13 +53,5 @@ public class Author {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public Set<Book> getBook() {
-		return book;
-	}
-
-	public void setBook(Set<Book> book) {
-		this.book = book;
 	}
 }
