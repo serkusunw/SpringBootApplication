@@ -16,9 +16,9 @@ import javax.persistence.Transient;
 
 @Entity
 @AssociationOverrides({
-    @AssociationOverride(name = "primaryKey.user",
+    @AssociationOverride(name = "id.user",
         joinColumns = @JoinColumn(name = "user_id")),
-    @AssociationOverride(name = "primaryKey.book",
+    @AssociationOverride(name = "id.book",
         joinColumns = @JoinColumn(name = "book_id")) })
 @Table(name = "Reserved_Books")
 public class ReservedBooks  implements Serializable{
@@ -26,35 +26,35 @@ public class ReservedBooks  implements Serializable{
 	private static final long serialVersionUID = 6953928350970817813L;
 
 	@EmbeddedId
-	private ReservedBooksId primaryKey = new ReservedBooksId();
+	private ReservedBooksId id = new ReservedBooksId();
 	
 	@Column(name = "reservation_date")
 	private Date reservationDate;
 	
     @Transient
     public User getUser() {
-        return getPrimaryKey().getUser();
+        return getId().getUser();
     }
  
     public void setUser(User user) {
-        getPrimaryKey().setUser(user);
+    	getId().setUser(user);
     }
  
     @Transient
     public Book getBook() {
-        return getPrimaryKey().getBook();
+        return getId().getBook();
     }
  
     public void setBook(Book book) {
-        getPrimaryKey().setBook(book);
+    	getId().setBook(book);
     }
-	
-	public ReservedBooksId getPrimaryKey() {
-		return primaryKey;
+
+	public ReservedBooksId getId() {
+		return id;
 	}
 
-	public void setPrimaryKey(ReservedBooksId primaryKey) {
-		this.primaryKey = primaryKey;
+	public void setId(ReservedBooksId id) {
+		this.id = id;
 	}
 
 	public Date getReservationDate() {

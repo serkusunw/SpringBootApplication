@@ -21,7 +21,6 @@
 
 	
 	<div class="container-fluid px-5 pt-1 ">
-
 		<div class="row m-5">
 			<div class="col-2">
 				<div class="list-group mb-4" style="background-color: white; box-shadow: 1px 4px 25px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
@@ -34,14 +33,23 @@
 			<div class="col-9 offset-1">
 				<div class="container-fluid pb-5 pt-2 px-5" style="background-color: white; box-shadow: 1px 4px 25px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
 					<c:choose>
+						<c:when test="${reservationStatus == true }">
+							<div class="container alert alert-success mt-2 text-center" role="alert"><b><s:message code="success.librarian.book.reservation"/></b></div>
+						</c:when>
+						<c:when test="${reservationStatus == false}">
+							<div class="container alert alert-danger mt-2 text-center" role="alert"><b><s:message code="fault.librarian.book.reservation"/></b></div>
+						</c:when>
+					</c:choose>
+				
+					<c:choose>
 						<c:when test="${operation eq 'showBooks'}">
 										<div class="row row-eq-height pt-4">
 												<c:forEach var="book" items="${books}">
 													<div class="col-3 mb-4">
-														<div class="card h-100">
+														<div class="card h-100 shadow">
 															<img class="card-img-top" src="/images/<c:url value="${book.image_name}"/>">
 															<div class="card-body d-flex flex-column text-center" style="height:100%;">
-																<h5 class="card-title"><c:out value="${book.title}"/></h5>
+																<h5 class="card-title "><c:out value="${book.title}"/></h5>
 																
 																<div class="mt-auto"><small class="card-title"><c:out value="${book.release_date}"/></small>
 																<div class="mt-auto">
@@ -134,7 +142,7 @@
 					</div>
 			</div>
 	</div>
-
+	</div>
 </body>
 
 </html>

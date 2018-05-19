@@ -22,7 +22,6 @@ import pl.serkus.repository.BookRepository;
 import pl.serkus.repository.CategoryRepository;
 import pl.serkus.repository.PublishingHouseRepository;
 import pl.serkus.repository.ReservedBooksRepository;
-import pl.serkus.repository.UserRepository;
 import pl.serkus.service.LibrarianService;
 import pl.serkus.service.UserService;
 
@@ -59,7 +58,7 @@ public class LibrarianServiceImpl implements LibrarianService{
 	}
 	
 	@Override
-	public void reserveBook(Book book) {
+	public Boolean reserveBook(Book book) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
 		
@@ -67,9 +66,14 @@ public class LibrarianServiceImpl implements LibrarianService{
 		reservation.setBook(book);
 		reservation.setUser(user);
 		reservation.setReservationDate(Date.valueOf(LocalDate.now()));
-		
-		
-		reservedBooksRepository.save(reservation);
+		int result = reservedBooksRepository.findByUserAndBook(user.getId(), book.getId());
+		if(result == 0) {
+			System.out.println("ILOŚĆ KSIAZEK === 00000!!!!!");
+			reservedBooksRepository.save(reservation);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	@Override

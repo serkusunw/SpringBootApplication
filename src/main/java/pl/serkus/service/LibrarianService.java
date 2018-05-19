@@ -12,7 +12,7 @@ public interface LibrarianService {
 	
 	public void saveBook(Book book);
 	
-	public void reserveBook(Book book);
+	public Boolean reserveBook(Book book);
 	
 	public Book findBookByTitle(String title);
 	

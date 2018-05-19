@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.serkus.model.Book;
 import pl.serkus.model.Category;
 import pl.serkus.service.LibrarianService;
@@ -66,20 +67,17 @@ public class BooksPageController {
 	}
 	
 	@RequestMapping("/showBooks/{category_id}/{page}/{book}/reservation")
-	public String reserveBook(@PathVariable("category_id") int category_id, @PathVariable("page") int page, @PathVariable("book") int book_id, Model model) {
-		List<Category> categories = librarianService.findAllCategories();
-
+	public String reserveBook(@PathVariable("category_id") int category_id, @PathVariable("page") int page, @PathVariable("book") int book_id, Model model, RedirectAttributes redirectAttributes) {
 		Book book = librarianService.findBookById(book_id);
+		Boolean status = false;
+
+		if(librarianService.reserveBook(book)) {
+			status = true;
+		}
 		
-		librarianService.reserveBook(book);
+		redirectAttributes.addFlashAttribute("reservationStatus", status);
 		
-		model.addAttribute("operation", "showBook");
-		model.addAttribute("book", book);
-		model.addAttribute("categories", categories);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentcategory", category_id);
-		
-		return "showBooks";
+		return "redirect:/showBooks/"+category_id+"/"+page;
 	}
 	
 }

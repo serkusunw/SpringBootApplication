@@ -73,7 +73,7 @@ public class User {
 	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
 	private Set<BorrowedBooks> borrowedBooks = new HashSet<>();
 	
-	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
 	private Set<ReservedBooks> reservedBooks = new HashSet<>();
 	
 	@Transient
