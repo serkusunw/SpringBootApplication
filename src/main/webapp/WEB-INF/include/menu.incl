@@ -18,13 +18,17 @@
 							code="page.title.login" /></a></li>
 			</sec:authorize>
 
-			<sec:authorize access="isAuthenticated() and hasRole('ROLE_LIBRARIAN')">
+			<sec:authorize access="isAuthenticated()">
 				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/showBooks/31/0"><s:message
 							code="librarian.showBooks" /></a></li>
 			</sec:authorize>
 			<sec:authorize access="isAuthenticated() and hasRole('ROLE_LIBRARIAN')">
 				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/manageBooks/book/addform"><s:message
 							code="librarian.manageBooks" /></a></li>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated() AND hasRole('ROLE_USER')">
+				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/yourBooks/reserved/0"><s:message
+							code="page.title.yourBooks" /></a></li>
 			</sec:authorize>
 		</ul>
 

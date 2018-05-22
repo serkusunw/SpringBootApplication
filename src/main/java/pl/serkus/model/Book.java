@@ -91,9 +91,42 @@ public class Book {
 	private String date;
 	
 	@Transient
+	private Date reservation_date;
+	
+	@Transient
+	private Date rentalDate;
+	
+	@Transient
+	private Date returnDate;
+	
+	@Transient
 	private MultipartFile image;
 	
 	public Book(){
+	}
+
+	public Date getRentalDate() {
+		return rentalDate;
+	}
+
+	public void setRentalDate(Date rentalDate) {
+		this.rentalDate = rentalDate;
+	}
+
+	public Date getReturnDate() {
+		return returnDate;
+	}
+
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
+	}
+
+	public Date getReservation_date() {
+		return reservation_date;
+	}
+
+	public void setReservation_date(Date reservation_date) {
+		this.reservation_date = reservation_date;
 	}
 
 	public Set<BorrowedBooks> getBorrowedBooks() {

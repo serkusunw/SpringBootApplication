@@ -33,11 +33,14 @@
 			<div class="col-9 offset-1">
 				<div class="container-fluid pb-5 pt-2 px-5" style="background-color: white; box-shadow: 1px 4px 25px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
 					<c:choose>
-						<c:when test="${reservationStatus == true }">
+						<c:when test="${reservationStatus == 1 }">
 							<div class="container alert alert-success mt-2 text-center" role="alert"><b><s:message code="success.librarian.book.reservation"/></b></div>
 						</c:when>
-						<c:when test="${reservationStatus == false}">
+						<c:when test="${reservationStatus == 0}">
 							<div class="container alert alert-danger mt-2 text-center" role="alert"><b><s:message code="fault.librarian.book.reservation"/></b></div>
+						</c:when>
+						<c:when test="${reservationStatus == -1}">
+							<div class="container alert alert-danger mt-2 text-center" role="alert"><b><s:message code="fault.librarian.book.quantity"/></b></div>
 						</c:when>
 					</c:choose>
 				
@@ -54,16 +57,27 @@
 																<div class="mt-auto"><small class="card-title"><c:out value="${book.release_date}"/></small>
 																<div class="mt-auto">
 																	<small class="text-muted mb-2"><c:out value="${book.publishingHouse.name}"/></small>
-																	<h6 class="card-title"><s:message code="book.quantity.available"/><c:out value="${book.count}"/></h6>
+																	
+																	<c:choose>
+																		<c:when test="${book.count > 0 }">
+																			<h6 class="card-title"><s:message code="book.quantity.available"/><c:out value="${book.count}"/></h6>
+																		</c:when>
+																		<c:when test="${book.count == 0}">
+																			<h6 class="card-title" style="color: #d10202"><s:message code="fault.librarian.book.quantity"/></h6>
+																		</c:when>
+																	</c:choose>
+																	
 																	<input type="button"
 																	class="btn btn-dark btn-sm btn-block"
 																	onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage}/${book.id}'"
 																	value="<s:message code="button.show.description"/>" />
 																	
-																	<input type="button"
-																	class="btn btn-success btn-sm btn-block"
-																	onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage}/${book.id}/reservation'"
-																	value="<s:message code="button.reservation"/>" />
+																	<sec:authorize access="hasRole('ROLE_USER')">
+																		<input type="button"
+																		class="btn btn-success btn-sm btn-block"
+																		onclick="window.location.href='${pageContext.request.contextPath}/showBooks/${currentcategory}/${currentPage}/${book.id}/reservation'"
+																		value="<s:message code="button.reservation"/>" />
+																	</sec:authorize>
 																</div>
 																</div>
 															</div>

@@ -2,7 +2,6 @@ package pl.serkus.model;
 
 import java.io.Serializable;
 import java.sql.Date;
-
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.CascadeType;
@@ -10,8 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,21 +27,19 @@ public class BorrowedBooks implements Serializable{
 
 	@EmbeddedId
 	private BorrowedBooksId primaryKey = new BorrowedBooksId();
-	
+
 	@Column(name = "status")
 	private boolean status;
-	
+
 	@Column(name = "return_date")
 	private Date returnDate;
-	
+
 	@Column(name = "rental_date")
 	private Date rentalDate;
-	
 
 	public BorrowedBooks() {
 	}
 	
-
 	public BorrowedBooksId getPrimaryKey() {
 		return primaryKey;
 	}

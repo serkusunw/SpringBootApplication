@@ -5,14 +5,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.serkus.model.Author;
 import pl.serkus.model.Book;
+import pl.serkus.model.BorrowedBooks;
 import pl.serkus.model.Category;
 import pl.serkus.model.PublishingHouse;
+import pl.serkus.model.ReservedBooks;
 
 public interface LibrarianService {
 	
 	public void saveBook(Book book);
 	
-	public Boolean reserveBook(Book book);
+	public int reserveBook(Book book);
+	
+	public Page<ReservedBooks> findReservedUserBooks(Pageable pageable);
+	
+	public Page<BorrowedBooks> findBorrowedUserBooks(Pageable pageable);
 	
 	public Book findBookByTitle(String title);
 	

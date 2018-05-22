@@ -13,12 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.serkus.model.Author;
 import pl.serkus.model.Book;
+import pl.serkus.model.BorrowedBooks;
 import pl.serkus.model.Category;
 import pl.serkus.model.PublishingHouse;
 import pl.serkus.model.ReservedBooks;
 import pl.serkus.model.User;
 import pl.serkus.repository.AuthorRepository;
 import pl.serkus.repository.BookRepository;
+import pl.serkus.repository.BorrowedBooksRepository;
 import pl.serkus.repository.CategoryRepository;
 import pl.serkus.repository.PublishingHouseRepository;
 import pl.serkus.repository.ReservedBooksRepository;
@@ -40,9 +42,12 @@ public class LibrarianServiceImpl implements LibrarianService{
 	
 	@Autowired
 	PublishingHouseRepository publishingHouseRepository;
-	
+
 	@Autowired
 	ReservedBooksRepository reservedBooksRepository;
+	
+	@Autowired
+	BorrowedBooksRepository borrowedBooksRepository;
 	
 	@Autowired
 	UserService userService;
@@ -58,22 +63,45 @@ public class LibrarianServiceImpl implements LibrarianService{
 	}
 	
 	@Override
-	public Boolean reserveBook(Book book) {
+	public int reserveBook(Book book) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		
+
 		ReservedBooks reservation = new ReservedBooks();
 		reservation.setBook(book);
 		reservation.setUser(user);
 		reservation.setReservationDate(Date.valueOf(LocalDate.now()));
+
 		int result = reservedBooksRepository.findByUserAndBook(user.getId(), book.getId());
+		
 		if(result == 0) {
-			System.out.println("ILOŚĆ KSIAZEK === 00000!!!!!");
-			reservedBooksRepository.save(reservation);
-			return true;
+			if(book.getCount() > 0) {
+				reservedBooksRepository.save(reservation);
+				book.setCount(book.getCount() - 1);
+				bookRepository.save(book);
+				return 1;
+			}
+			else
+				return -1;
 		}
 		else
-			return false;
+			return 0;
+	}
+	
+	@Override
+	public Page<ReservedBooks> findReservedUserBooks(Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		
+		return reservedBooksRepository.findReservedBooks(user.getId(), pageable);
+	}
+	
+	@Override
+	public Page<BorrowedBooks> findBorrowedUserBooks(Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		
+		return borrowedBooksRepository.findBorrowedBooks(user.getId(), pageable);
 	}
 
 	@Override
