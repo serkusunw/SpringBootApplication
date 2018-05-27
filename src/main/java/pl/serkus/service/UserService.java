@@ -1,13 +1,8 @@
 package pl.serkus.service;
 
 import java.util.List;
-import java.util.Set;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import pl.serkus.model.Book;
-import pl.serkus.model.Category;
 import pl.serkus.model.User;
 
 public interface UserService {
@@ -21,6 +16,8 @@ public interface UserService {
 	public Page<User> findAllPages(Pageable pageable);
 	
 	public User findUserByEmail(String email);
+	
+	public List<User> findUserByNameAndSurname(String name, String surname);
 	
 	public User findUserById(int id);
 	

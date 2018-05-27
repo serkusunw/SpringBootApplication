@@ -32,7 +32,7 @@ public class AdminPageController {
 	}
 	
 	@RequestMapping(value = "admin/users/{page}")
-	public String showZamowieniaPageable(@PathVariable("page") int page, Model model) {
+	public String showUsersPageable(@PathVariable("page") int page, Model model) {
 		
 		int elements = 5;
 		Page<User> pages = userService.findAllPages(PageRequest.of(page, elements));
@@ -56,12 +56,14 @@ public class AdminPageController {
 	public String getUserToEdit(@PathVariable("id") String id, Model model) {
 		
 		User user = new User();
+		user.setId(Integer.parseInt(id));
 		int userId = Integer.parseInt(id);
 		user = userService.findUserById(userId);
 		
 		Map<Integer, String> roleMap = new HashMap<>();
 		roleMap.put(1, "Użytkownik");
 		roleMap.put(2, "Administrator");
+		roleMap.put(3, "Bibliotekarz");
 		
 		int role = user.getRoles().iterator().next().getId();
 		
@@ -78,24 +80,37 @@ public class AdminPageController {
 		
 			String returnPage = null;
 			String role = null;
-					
-			if(user.getRoleId() == 1) {
+			
+			User u = userService.findUserById(user.getId());
+			
+			u.setName(user.getName());
+			u.setSurname(user.getSurname());
+			u.setDate(user.getDate());
+			u.setEmail(user.getEmail());
+			
+			int role_id = user.getRoleId();
+			
+			if(role_id == 1) {
 				role = "ROLE_USER";
 			}
-			else if(user.getRoleId()== 2){
+			else if(role_id == 2){
 				role = "ROLE_ADMIN";
+			}
+			else if(role_id == 3){
+				role = "ROLE_LIBRARIAN";
 			}
 			
 			if(result.hasErrors()) {
 				Map<Integer, String> roleMap = new HashMap<>();
 				roleMap.put(1, "Użytkownik");
 				roleMap.put(2, "Administrator");
+				roleMap.put(3, "Bibliotekarz");
 				model.addAttribute("roleMap", roleMap);
 				
 				returnPage = "/admin/useredit";
 			}
 			else {
-				userService.updateUser(role, user);
+				userService.updateUser(role, u);
 				
 				returnPage = "redirect:/admin/users";
 			}

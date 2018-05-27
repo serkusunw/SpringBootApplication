@@ -25,7 +25,7 @@
 			<div class="col-2">
 				<div class="list-group mb-4" style="background-color: white; box-shadow: 1px 4px 25px -4px rgba(0, 0, 0, 0.63); border-radius: 5px;">
 					<a href="/yourBooks/reserved/0" class="list-group-item list-group-item-action"><s:message code="user.books.reserved.title"/></a>
-					<a href="/yourBooks/borrowed" class="list-group-item list-group-item-action"><s:message code="user.books.borrowed.title"/></a>
+					<a href="/yourBooks/borrowed/0" class="list-group-item list-group-item-action"><s:message code="user.books.borrowed.title"/></a>
 				</div>
 			</div>
 			<div class="col-9 offset-1">
@@ -51,7 +51,7 @@
 											<td><b>&ldquor;<c:out value="${book.title}"/>&rdquo;</b></td>
 											<td><c:out value="${book.author.name}"/> <c:out value="${book.author.surname}"/></td>
 											<td><c:out value="${book.publishingHouse.name}"/></td>
-											<td><c:out value="${book.reservation_date}"/></td>
+											<td><b><font color="#2bbc29"><c:out value="${book.reservation_date}"/></font></b></td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -95,8 +95,8 @@
 											<td><b>&ldquor;<c:out value="${book.title}"/>&rdquo;</b></td>
 											<td><c:out value="${book.author.name}"/> <c:out value="${book.author.surname}"/></td>
 											<td><c:out value="${book.publishingHouse.name}"/></td>
-											<td><c:out value="${book.rentaldate}"/></td>
-											<td><c:out value="${book.returnDate}"/></td>
+											<td><b><font color="#29bcb4"><c:out value="${book.rental_date}"/></font></b></td>
+											<td><b><font color="#2bbc29"><c:out value="${book.return_date}"/></font></b></td>
 										</tr>
 									</c:forEach>
 								</tbody>

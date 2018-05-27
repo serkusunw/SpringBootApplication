@@ -3,7 +3,6 @@ package pl.serkus.model;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -94,10 +92,10 @@ public class Book {
 	private Date reservation_date;
 	
 	@Transient
-	private Date rentalDate;
+	private Date rental_date;
 	
 	@Transient
-	private Date returnDate;
+	private Date return_date;
 	
 	@Transient
 	private MultipartFile image;
@@ -105,20 +103,21 @@ public class Book {
 	public Book(){
 	}
 
-	public Date getRentalDate() {
-		return rentalDate;
+
+	public Date getRental_date() {
+		return rental_date;
 	}
 
-	public void setRentalDate(Date rentalDate) {
-		this.rentalDate = rentalDate;
+	public void setRental_date(Date rental_date) {
+		this.rental_date = rental_date;
 	}
 
-	public Date getReturnDate() {
-		return returnDate;
+	public Date getReturn_date() {
+		return return_date;
 	}
 
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
+	public void setReturn_date(Date return_date) {
+		this.return_date = return_date;
 	}
 
 	public Date getReservation_date() {

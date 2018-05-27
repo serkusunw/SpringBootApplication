@@ -26,13 +26,29 @@
 				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/manageBooks/book/addform"><s:message
 							code="librarian.manageBooks" /></a></li>
 			</sec:authorize>
+			<sec:authorize access="isAuthenticated() and hasRole('ROLE_LIBRARIAN')">
+				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/libraryManage/user/reservations/show"><s:message
+							code="librarian.manageLoans" /></a></li>
+			</sec:authorize>
 			<sec:authorize access="isAuthenticated() AND hasRole('ROLE_USER')">
 				<li class="nav-item"><a class="btn btn-outline-light mr-2" href="/yourBooks/reserved/0"><s:message
 							code="page.title.yourBooks" /></a></li>
 			</sec:authorize>
 		</ul>
 
-		<ul class="navbar-nav">
+
+		<ul class="navbar-nav mx-5">
+					<sec:authorize access="isAuthenticated() and not hasRole('ROLE_ADMIN')">
+						
+						<form method="POST" class="form-inline" action="/library/search" enctype="multipart/form-data">
+						    <input type="text" class="form-control" name="searchText" placeholder="<s:message code="search.placeholder"/>" />
+						    <input type="submit" value="<s:message code="search.title"/>" class="btn btn-outline-success ml-2"/>
+						</form>
+						
+					</sec:authorize>
+		</ul>
+		
+		<ul class="navbar-nav ml-5">
 			<sec:authorize
 				access="isAuthenticated() and not hasRole('ROLE_ADMIN')">
 				<li class="nav-item"><a class="btn btn-info mr-2"

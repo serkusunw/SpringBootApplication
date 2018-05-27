@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,11 @@ import pl.serkus.model.Book;
 import pl.serkus.model.BorrowedBooks;
 import pl.serkus.model.Category;
 import pl.serkus.model.PublishingHouse;
+import pl.serkus.model.ReservedBooks;
 import pl.serkus.model.User;
 import pl.serkus.repository.BookRepository;
+import pl.serkus.repository.BorrowedBooksRepository;
+import pl.serkus.repository.ReservedBooksRepository;
 import pl.serkus.service.LibrarianService;
 import pl.serkus.service.UserService;
 import pl.serkus.validator.LibrarianAuthorValidator;
@@ -36,13 +40,20 @@ import pl.serkus.validator.LibrarianPublishingHouseValidator;
 public class LibrarianBookController {
 
 	@Autowired
+	LibrarianService librarianService;
+	
+	@Autowired
 	UserService userService;
 	
 	@Autowired
 	BookRepository bookRepository;
 	
 	@Autowired
-	LibrarianService librarianService;
+	ReservedBooksRepository reservedBooksRepository;
+	
+	@Autowired
+	BorrowedBooksRepository borrowedBooksRepository;
+	
 	
 	@RequestMapping(value = "/manageBooks")
 	public String showManageBookPage() {
@@ -434,5 +445,113 @@ public class LibrarianBookController {
 		model.addAttribute("currentPage", currentPage);
 		
 		return "manageBooks";
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/reservations/show")
+	public String showUserReservations(Model model) {
+		User user = new User();
+		
+		model.addAttribute("user", user);
+		model.addAttribute("operation", "getUserReservations");
+		
+		return "loanManagement";
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/borrows/show")
+	public String showUserBorrows(Model model) {
+		User user = new User();
+		
+		model.addAttribute("user", user);
+		model.addAttribute("operation", "getUserBorrows");
+		
+		return "loanManagement";
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/{operation}")
+	public String showUserBooks(@PathVariable("operation") String operation, User user, Model model) {
+		List<User> users = userService.findUserByNameAndSurname(user.getName(), user.getSurname());
+		
+		if(operation.equals("getUserReservations"))
+			model.addAttribute("NextOperation", "getReservations");
+		else if(operation.equals("getUserBorrows"))
+			model.addAttribute("NextOperation", "getBorrows");
+		
+		if(users.isEmpty())
+		{
+			model.addAttribute("success", 0);
+		}
+		else
+		{
+			model.addAttribute("operation", "showUsers");
+			model.addAttribute("users", users);
+		}
+		
+		return "loanManagement";
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/reservations/show/{userID}")
+	public String getUserReservations(@PathVariable("userID") int userId, Model model) {
+		List<ReservedBooks> userReservations = reservedBooksRepository.findUserReservedBooks(userId);
+		
+		List<Book> books = new ArrayList<>();
+		
+		for(ReservedBooks book : userReservations) {
+			Book b = book.getBook();
+			books.add(b);
+		}
+		
+		User user = userService.findUserById(userId);
+		
+		model.addAttribute("operation", "showUserReservations");
+		model.addAttribute("books",books);
+		model.addAttribute("userID",userId);
+		model.addAttribute("user",user);
+		
+		return "loanManagement";
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/borrows/show/{userID}")
+	public String getUserBorrows(@PathVariable("userID") int userId, Model model) {
+		List<BorrowedBooks> userBorrows = borrowedBooksRepository.findUserBorrowedBooks(userId);
+		
+		List<Book> books = new ArrayList<>();
+		
+		for(BorrowedBooks book : userBorrows) {
+			Book b = book.getBook();
+			books.add(b);
+		}
+		
+		User user = userService.findUserById(userId);
+		
+		model.addAttribute("operation", "showUserBorrows");
+		model.addAttribute("books",books);
+		model.addAttribute("userID",userId);
+		model.addAttribute("user",user);
+		
+		return "loanManagement";
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/borrow/{userID}/{bookID}")
+	public String borrowBook(@PathVariable("userID") int userId, @PathVariable("bookID") int bookId, Model model) {
+		
+		ReservedBooks bookToBorrow = reservedBooksRepository.findByUserBook(bookId, userId);
+		BorrowedBooks newBorrowedBook = new BorrowedBooks(bookToBorrow.getBook(), bookToBorrow.getUser());
+		
+		borrowedBooksRepository.save(newBorrowedBook);
+		reservedBooksRepository.delete(bookToBorrow);
+		
+		return "redirect:/libraryManage/user/reservations/show/" + userId;
+	}
+	
+	@RequestMapping(value = "/libraryManage/user/return/{userID}/{bookID}")
+	public String returnwBook(@PathVariable("userID") int userId, @PathVariable("bookID") int bookId, Model model) {
+		BorrowedBooks borrowedBook = borrowedBooksRepository.findByUserBook(bookId, userId);
+		Book bookToUpdate = borrowedBook.getBook();
+		bookToUpdate.setCount(bookToUpdate.getCount() + 1);
+		bookRepository.save(bookToUpdate);
+		
+		borrowedBooksRepository.delete(borrowedBook);
+		
+		return "redirect:/libraryManage/user/borrows/show/" + userId;
 	}
 }

@@ -2,6 +2,9 @@ package pl.serkus.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.CascadeType;
@@ -38,6 +41,18 @@ public class BorrowedBooks implements Serializable{
 	private Date rentalDate;
 
 	public BorrowedBooks() {
+	}
+	
+	public BorrowedBooks(Book book, User user) {
+		setBook(book);
+		setUser(user);
+		setStatus(true);
+		setRentalDate(Date.valueOf(LocalDate.now()));
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(getRentalDate().getTime());
+		cal.add(Calendar.MONTH, 3);
+		setReturnDate(new Date(cal.getTimeInMillis()));
 	}
 	
 	public BorrowedBooksId getPrimaryKey() {

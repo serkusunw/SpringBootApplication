@@ -1,5 +1,7 @@
 package pl.serkus.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +20,10 @@ public interface ReservedBooksRepository extends JpaRepository<ReservedBooks, In
 	
 	@Query(value = "SELECT * FROM reserved_books JOIN book ON book.book_id = reserved_books.book_id WHERE reserved_books.user_id = ?1", nativeQuery = true)
 	public Page<ReservedBooks> findReservedBooks(int user_id, Pageable pageable);
+	
+	@Query(value = "SELECT * FROM reserved_books JOIN book ON book.book_id = reserved_books.book_id WHERE reserved_books.user_id = ?1", nativeQuery = true)
+	public List<ReservedBooks> findUserReservedBooks(int user_id);
+	
+	@Query(value = "SELECT * FROM reserved_books WHERE book_id = ?1 AND user_id = ?2", nativeQuery = true)
+	public ReservedBooks findByUserBook(int book_id, int user_id);
 }

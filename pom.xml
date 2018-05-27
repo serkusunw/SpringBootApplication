@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>SpringBootApplication</name>
-	<description>Aplikacja do zarządzania</description>
+	<description>Aplikacja do zarządzania biblioteką</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -29,11 +29,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jersey</artifactId>
-		</dependency> -->
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>

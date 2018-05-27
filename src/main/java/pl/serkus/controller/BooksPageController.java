@@ -84,6 +84,17 @@ public class BooksPageController {
 		return "redirect:/showBooks/"+category_id+"/"+page;
 	}
 	
+	@RequestMapping("/showBooks/{book}/reservation")
+	public String reserveFoundBook(@PathVariable("book") int book_id, Model model, RedirectAttributes redirectAttributes) {
+		Book book = librarianService.findBookById(book_id);
+		int category_id = book.getCategory().getId();
+		int  status = librarianService.reserveBook(book);
+		
+		redirectAttributes.addFlashAttribute("reservationStatus", status);
+		
+		return "redirect:/showBooks/"+category_id+"/0";
+	}
+	
 	
 	@RequestMapping("/yourBooks/{operation}/{page}")
 	public String showYourBooksPage(@PathVariable("operation") String operation, @PathVariable("page") int page, Model model) {
@@ -100,8 +111,7 @@ public class BooksPageController {
 			List<Book> reservedBooks = new ArrayList<>();
 			
 			for(ReservedBooks book : books) {
-				Book b = new Book();
-				b = book.getBook();
+				Book b = book.getBook();
 				
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(book.getReservationDate().getTime());
@@ -126,11 +136,10 @@ public class BooksPageController {
 			List<Book> borrowedBooks = new ArrayList<>();
 			
 			for(BorrowedBooks book : books) {
-				Book b = new Book();
-				b = book.getBook();
-				
-				b.setRentalDate(book.getRentalDate());
-				b.setReturnDate(book.getReturnDate());
+				Book b = book.getBook();
+
+				b.setRental_date(book.getRentalDate());
+				b.setReturn_date(book.getReturnDate());
 				borrowedBooks.add(b);
 			}
 			
